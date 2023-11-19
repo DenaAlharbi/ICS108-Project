@@ -37,14 +37,16 @@ public class parent extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //borders
-        //center.setStyle("-fx-background-color: #8c2b2b;");
+        center.setStyle("-fx-background-color: #f6e5e5;");
         //center.setPrefSize(10, 50);
         //center.setMinWidth(0);
         //center.setMinHeight(0);
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setMinWidth(10);
-        anchorPane.setMinHeight(10);
-        anchorPane.setStyle("-fx-background-color: #8c2b2b;");
+
+        center.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        nameLabel.setMinWidth(100);
+        nameLabel.setMinHeight(100);
+
 
         addFriendText.setMinWidth(100);
         changePicText.setMinWidth(100);
@@ -75,14 +77,39 @@ public class parent extends Application {
         borderPane.setLeft(vertical);
         borderPane.setTop(horizontal);
         //borderPane.setBottom(center);
-        borderPane.setBottom(anchorPane);
-        BorderPane.setAlignment(anchorPane, Pos.BOTTOM_RIGHT);
+        //borderPane.setBottom(anchorPane);
+        //BorderPane.setAlignment(anchorPane, Pos.BOTTOM_RIGHT);
+        borderPane.setCenter(center);
+
 
         Scene scene = new Scene(borderPane,1100, 800);
         stage.setTitle("FaceLite");
         stage.setScene(scene);
         stage.show();
     }
+    public class ButtonHandler implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e){
+            if (e.getSource() == addButton){
+                System.out.print("The add button was clicked");
+            }
+            else if (e.getSource() == deleteButton){
+                System.out.print("The delete button was clicked");
+            }
+            else if (e.getSource()==lookupButton) {
+                System.out.println("the lookup button was clicked");
+            }
+            else if (e.getSource()==changeStatus) {
+                System.out.println("the status button was clicked");
+            }
+            else if(e.getSource()==changePicture ){
+                System.out.println("the pic button was clicked");
+            }
+            else if (e.getSource()==addFriend) {
+                System.out.println("the add button was clicked");
+            }
+        }
+    }
+
 
 
 
