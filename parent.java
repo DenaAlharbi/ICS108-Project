@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -18,7 +20,7 @@ import java.util.Objects;
 public class parent extends Application {
     //borders
     BorderPane borderPane= new BorderPane();
-    Pane center = new Pane();
+    GridPane center = new GridPane();
     //buttons and textfield for the top horizontal
     Label nameLabel = new Label("Name:");
     TextField topText = new TextField();
@@ -79,7 +81,30 @@ public class parent extends Application {
         //borderPane.setBottom(center);
         //borderPane.setBottom(anchorPane);
         //BorderPane.setAlignment(anchorPane, Pos.BOTTOM_RIGHT);
+        Label labelName = new Label("Profile Name: ");
+        ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
+        Label statusDefault = new Label("No current status");
+
+
+        profileDefault.setFitWidth(300);
+        profileDefault.setPreserveRatio(true);
+        labelName.setPadding(new Insets(10));
+        //profileDefault.setPadding(new Insets(10));
+        statusDefault.setPadding(new Insets(10));
+        StackPane imagePane = new StackPane();
+        imagePane.setPadding(new Insets(10));
+        imagePane.getChildren().add(profileDefault);
+        GridPane.setConstraints(labelName, 0, 0);
+        GridPane.setConstraints(imagePane, 0, 2);
+        GridPane.setConstraints(statusDefault, 0, 4);
+
+
+
+        center.getChildren().addAll(labelName, profileDefault, statusDefault);
         borderPane.setCenter(center);
+
+
+
 
 
         Scene scene = new Scene(borderPane,1100, 800);
