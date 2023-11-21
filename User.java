@@ -18,7 +18,6 @@ public class User {
         pane = new Pane();
         id = (int)(Math.random() * 90000) + 10000;
         this.name=name;
-
     }
     public Pane getPane() {
 
