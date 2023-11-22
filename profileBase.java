@@ -3,6 +3,9 @@ package com.example.ics108project;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+
+import java.util.ArrayList;
 
 public class profileBase extends parent{
 
@@ -10,18 +13,12 @@ public class profileBase extends parent{
         private String nameForButton;
         private ImageView profileImage;
         private Label statusLabel;
+        private ArrayList<profileBase> myFriends = new ArrayList<>();
 
         public profileBase(String name) {
-            this.nameLabel= new Label(name);
-            this.nameForButton= name;
-            //Label labelName =new Label(user.getName());
-            //Label labelName = new Label(user.getName());
-            //profileImage = new ImageView(new Image(user.getProfilePicture()));
-            //statusLabel = new Label(user.getStatus());
-
-            //getChildren().addAll(nameLabel, profileImage, statusLabel);
+            this.nameLabel = new Label(name);
+            this.nameForButton = name;
         }
-        //Label labelName =new Label(user.getName());
         Label labelFriends = new Label("Friends ");
 
         ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
