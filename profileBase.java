@@ -13,7 +13,7 @@ public class profileBase extends parent{
         private String nameForButton;
         private ImageView profileImage;
         private Label statusLabel;
-        private ArrayList<profileBase> myFriends = new ArrayList<>();
+        private ArrayList<profileBase> myFriends= new ArrayList<>();
 
         public profileBase(String name) {
             this.nameLabel = new Label(name);
@@ -46,4 +46,5 @@ public class profileBase extends parent{
     public String getNameForButton(){
         return nameForButton;
     }
+    public ArrayList<profileBase> getMyFriends(){return myFriends;}
 }

@@ -26,6 +26,8 @@ public class parent extends Application {
     //borders
     BorderPane borderPane= new BorderPane();
     StackPane welcomePane= new StackPane();
+    HBox updateLabelPane= new HBox();
+    VBox friendsVbox = new VBox();
     StackPane userRemovedPane= new StackPane();
     StackPane errorMessagePane= new StackPane();
     StackPane PicFrame= new StackPane();
@@ -85,6 +87,9 @@ public class parent extends Application {
         //setting up
         VBox vertical = new VBox(30, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus));
         vertical.setStyle("-fx-background-color: #dad7d7;");
+        friendsVbox.setStyle("-fx-background-color: #ad4242;");
+        friendsVbox.setPrefSize(50,50);
+        friendsVbox.setPadding(new Insets(0, 10, 0, 10));
         vertical.setPrefSize(300, 100);
         vertical.setAlignment(Pos.CENTER);
         vertical.setPadding(new Insets(0, 10, 0, 10));
@@ -118,47 +123,53 @@ public class parent extends Application {
                 users.add(newUserBase);
                 Label nameLabelUpdated = newUserBase.getNameLabel();
                 PicFrame.getChildren().add(newUserBase.getProfileDefault());
+                //PicFrame.setAlignment(newUserBase.getProfileDefault(),Pos.CENTER);
+                PicFrame.setPrefWidth(300);
+
                 GridPane.setConstraints(nameLabelUpdated, 0, 0);
                 GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
                 GridPane.setConstraints(PicFrame, 0, 1);
                 GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
+                GridPane.setConstraints(friendsVbox,1,1);
                 nameLabelUpdated.setPadding(new Insets(10));
                 newUserBase.getLabelFriends().setPadding(new Insets(10));
                 newUserBase.getStatusDefault().setPadding(new Insets(10));
                 newUserBase.getProfileDefault().setFitWidth(300);
                 newUserBase.getProfileDefault().setPreserveRatio(true);
-                updateLabel = new Label("A new user has been added");
-                //GridPane.setHalignment(updateLabel, HPos.CENTER);
-                //GridPane.setValignment(updateLabel, VPos.BOTTOM);
+                friendsVbox.getChildren().clear();
+                //updateLabel = new Label("A new user has been added");
+                //updateLabelPane.getChildren().add(updateLabel);
+                //GridPane.setHalignment(updateLabelPane, HPos.CENTER);
+                //GridPane.setValignment(updateLabelPane, VPos.BOTTOM);
 
                 center.getChildren().clear();
-                center.add(updateLabel,0, Integer.MAX_VALUE);
+                //center.getChildren().add(updateLabelPane, 0, center.getRowCount());
 
-                center.getChildren().addAll(nameLabelUpdated, newUserBase.getLabelFriends(), newUserBase.getProfileDefault(), newUserBase.getStatusDefault());
+
+                center.getChildren().addAll(friendsVbox,nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
                 //center.getChildren().add(newUserPane);
                 borderPane.setCenter(center);
-            }
-            else if (e.getSource() == deleteButton) {
+            } else if (e.getSource() == deleteButton) {
                 //System.out.print("The delete button was clicked");
                 String userNOW = topText.getText();
                 System.out.println(users);
 
                 for (profileBase user : users) {
 
-                    if (Objects.equals(user.getNameForButton(), userNOW)){
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
                         users.remove(user);
                         center.getChildren().clear();
                         center.getChildren().add(userRemovedPane);
                     }
                     System.out.println(users);
                 }
-            }
-            else if (e.getSource() == lookupButton) {
+            } else if (e.getSource() == lookupButton) {
                 String userNOW = topText.getText();
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
                         PicFrame.getChildren().clear();
                         PicFrame.getChildren().add(user.getProfileDefault());
+                        PicFrame.setAlignment(user.getProfileDefault(), Pos.CENTER);
                         GridPane.setConstraints(user.getNameLabel(), 0, 0);
                         GridPane.setConstraints(user.getLabelFriends(), 1, 0);
                         GridPane.setConstraints(PicFrame, 0, 1);
@@ -168,14 +179,20 @@ public class parent extends Application {
                         user.getStatusDefault().setPadding(new Insets(10));
                         user.getProfileDefault().setFitWidth(300);
                         user.getProfileDefault().setPreserveRatio(true);
+                        GridPane.setConstraints(friendsVbox,1,1);
+
+                        friendsVbox.getChildren().clear();
+                        for (profileBase userAddress : user.getMyFriends()) {
+                            //need to add an if statement that checks if the user has been removed or not
+                            Label label = new Label(userAddress.getNameForButton());
+                            friendsVbox.getChildren().add(label);
+                        }
                         center.getChildren().clear();
 
-                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+                        center.getChildren().addAll(friendsVbox,user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
                         borderPane.setCenter(center);
-                    }
-                }
-            }
-            else if(e.getSource()==changeStatus){
+                }}
+            } else if (e.getSource() == changeStatus) {
                 String userNOW = topText.getText();
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
@@ -186,22 +203,27 @@ public class parent extends Application {
                         GridPane.setConstraints(user.getNameLabel(), 0, 0);
                         GridPane.setConstraints(user.getLabelFriends(), 1, 0);
                         GridPane.setConstraints(PicFrame, 0, 1);
+                        GridPane.setConstraints(friendsVbox,1,1);
                         GridPane.setConstraints(user.getStatusDefault(), 0, 2);
                         user.getNameLabel().setPadding(new Insets(10));
                         user.getLabelFriends().setPadding(new Insets(10));
                         user.getStatusDefault().setPadding(new Insets(10));
                         user.getProfileDefault().setFitWidth(300);
                         user.getProfileDefault().setPreserveRatio(true);
+                        friendsVbox.getChildren().clear();
+                        for (profileBase userAddress : user.getMyFriends()) {
+                            Label label = new Label(userAddress.getNameForButton());
+                            friendsVbox.getChildren().add(label);
+                        }
                         center.getChildren().clear();
 
-                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+                        center.getChildren().addAll(friendsVbox,user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
                         borderPane.setCenter(center);
                     }
                 }
-            }
-            else if(e.getSource()==changePicture ){
+            } else if (e.getSource() == changePicture) {
                 String userNOW = topText.getText();
-                //ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
+
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
                         user.profileDefault = new ImageView(new Image(changePicText.getText()));
@@ -216,19 +238,71 @@ public class parent extends Application {
                         user.getStatusDefault().setPadding(new Insets(10));
                         user.getProfileDefault().setFitWidth(300);
                         user.getProfileDefault().setPreserveRatio(true);
+                        GridPane.setConstraints(friendsVbox,1,1);
+
+                        friendsVbox.getChildren().clear();
+                        for (profileBase userAddress : user.getMyFriends()) {
+                            Label label = new Label(userAddress.getNameForButton());
+                            friendsVbox.getChildren().add(label);
+                        }
                         center.getChildren().clear();
-                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+
+                        center.getChildren().addAll(friendsVbox,user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
                         borderPane.setCenter(center);
                     }
                 }
-            }
-            else if(e.getSource()==addFriend){
+            } else if (e.getSource() == addFriend) {
+                String userNOW = topText.getText();
 
-            }
+                for (profileBase user : users) {
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+                        for (profileBase userADD : users) {
+                            if (Objects.equals(userADD.getNameForButton(), addFriendText.getText())) {
+                                user.getMyFriends().add(userADD);
+                                userADD.getMyFriends().add(user);
+                                //System.out.print(userADD.getNameForButton());
+                                //System.out.print(user.getNameForButton());
+
+                                System.out.print(user.getMyFriends());
+                                System.out.print(userADD.getMyFriends());
+
+
+
+                            }
+                        }
+                    }
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+                        PicFrame.getChildren().clear();
+                        PicFrame.getChildren().add(user.getProfileDefault());
+                        GridPane.setConstraints(user.getNameLabel(), 0, 0);
+                        GridPane.setConstraints(user.getLabelFriends(), 1, 0);
+                        GridPane.setConstraints(PicFrame, 0, 1);
+                        GridPane.setConstraints(user.getStatusDefault(), 0, 2);
+                        user.getNameLabel().setPadding(new Insets(10));
+                        user.getLabelFriends().setPadding(new Insets(10));
+                        user.getStatusDefault().setPadding(new Insets(10));
+                        user.getProfileDefault().setFitWidth(300);
+                        user.getProfileDefault().setPreserveRatio(true);
+                        GridPane.setConstraints(friendsVbox,1,1);
+
+                        friendsVbox.getChildren().clear();
+                        for (profileBase userAddress : user.getMyFriends()) {
+                            Label label = new Label(userAddress.getNameForButton());
+                            friendsVbox.getChildren().add(label);
+                        }
+                        center.getChildren().clear();
+
+                        center.getChildren().addAll(friendsVbox,user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
+                        borderPane.setCenter(center);
+                    }
+                }
+
         }
-    }
+
+        }
+
 
     public static void main(String[] args) {
         launch(args);
     }
-}
+}}
