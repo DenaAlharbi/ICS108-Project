@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class parent extends Application {
+    ArrayList<profileBase> users=new ArrayList<profileBase>();
     //borders
     BorderPane borderPane= new BorderPane();
     StackPane welcomePane= new StackPane();
@@ -149,56 +150,117 @@ public class parent extends Application {
         stage.show();
     }
     public class ButtonHandler implements EventHandler<ActionEvent> {
-        public void handle(ActionEvent e){
-            ArrayList<User> users=new ArrayList<>();
-
-            if (e.getSource() == addButton){
+        public void handle(ActionEvent e) {
+            //ArrayList<profileBase> users=new ArrayList<profileBase>();
+            if (e.getSource() == addButton) {
                 //System.out.print("The add button was clicked");
-                String nameRN =topText.getText();
-                User newUser= new User(nameRN);
-                profileBase newUserPane=new profileBase(newUser);
-                users.add(newUser);
-                Label nameLabelUpdated = new Label(newUser.getName());
-
+                String nameRN = topText.getText();
+                profileBase newUserBase = new profileBase(nameRN);
+                users.add(newUserBase);
+                Label nameLabelUpdated = newUserBase.getNameLabel();
                 GridPane.setConstraints(nameLabelUpdated, 0, 0);
-                GridPane.setConstraints(newUserPane.getLabelFriends(), 1, 0);
-                GridPane.setConstraints(newUserPane.getProfileDefault(), 0, 1);
-                GridPane.setConstraints(newUserPane.getStatusDefault(), 0, 2);
+                GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
+                GridPane.setConstraints(newUserBase.getProfileDefault(), 0, 1);
+                GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
                 nameLabelUpdated.setPadding(new Insets(10));
-                newUserPane.getLabelFriends().setPadding(new Insets(10));
-                newUserPane.getStatusDefault().setPadding(new Insets(10));
-                newUserPane.getProfileDefault().setFitWidth(300);
-                newUserPane.getProfileDefault().setPreserveRatio(true);
+                newUserBase.getLabelFriends().setPadding(new Insets(10));
+                newUserBase.getStatusDefault().setPadding(new Insets(10));
+                newUserBase.getProfileDefault().setFitWidth(300);
+                newUserBase.getProfileDefault().setPreserveRatio(true);
                 center.getChildren().clear();
+                //center.getChildren().clear();
 
-                center.getChildren().addAll(nameLabelUpdated,newUserPane.getLabelFriends(), newUserPane.getProfileDefault(), newUserPane.getStatusDefault());
+                center.getChildren().addAll(nameLabelUpdated, newUserBase.getLabelFriends(), newUserBase.getProfileDefault(), newUserBase.getStatusDefault());
+                //center.getChildren().add(newUserPane);
                 borderPane.setCenter(center);
             }
-            else if (e.getSource() == deleteButton){
-                System.out.print("The delete button was clicked");
-            }
-            else if (e.getSource()==lookupButton) {
-                System.out.println("the lookup button was clicked");
-            }
-            else if (e.getSource()==changeStatus) {
-                //System.out.println("the status button was clicked");
+            else if (e.getSource() == deleteButton) {
+                //System.out.print("The delete button was clicked");
+                String userNOW = topText.getText();
+                System.out.println(users);
 
-                Pane node = (Pane) center.getChildren();
-                if (node instanceof profileBase) {
-                    profileBase profile = (profileBase) node;
-                    profile.statusDefault= new Label(changeStatusText.getText());
-                } else {
-                    center.getChildren().clear();
-                    center.getChildren().add(errorMessagePane);
+                for (profileBase user : users) {
+
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+                        users.remove(user);
+                    }
+                    System.out.println(users);
                 }
             }
-            else if(e.getSource()==changePicture ){
-                System.out.println("the pic button was clicked");
+            else if (e.getSource() == lookupButton) {
+                //System.out.println("the lookup button was clicked");
+                String userNOW = topText.getText();
+                for (profileBase user : users) {
+
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+                        GridPane.setConstraints(user.getNameLabel(), 0, 0);
+                        GridPane.setConstraints(user.getLabelFriends(), 1, 0);
+                        GridPane.setConstraints(user.getProfileDefault(), 0, 1);
+                        GridPane.setConstraints(user.getStatusDefault(), 0, 2);
+                        user.getNameLabel().setPadding(new Insets(10));
+                        user.getLabelFriends().setPadding(new Insets(10));
+                        user.getStatusDefault().setPadding(new Insets(10));
+                        user.getProfileDefault().setFitWidth(300);
+                        user.getProfileDefault().setPreserveRatio(true);
+                        center.getChildren().clear();
+
+                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+                        borderPane.setCenter(center);
+                        //System.out.println("the lookup button was clicked");
+                    }
+                }
             }
-            else if (e.getSource()==addFriend) {
-                System.out.println("the add button was clicked");
+            else if(e.getSource()==changeStatus){
+                //System.out.println(users);
+
+                String userNOW = topText.getText();
+                for (profileBase user : users) {
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+
+                        user.statusDefault = new Label(changeStatusText.getText());
+                        GridPane.setConstraints(user.getNameLabel(), 0, 0);
+                        GridPane.setConstraints(user.getLabelFriends(), 1, 0);
+                        GridPane.setConstraints(user.getProfileDefault(), 0, 1);
+                        GridPane.setConstraints(user.getStatusDefault(), 0, 2);
+                        user.getNameLabel().setPadding(new Insets(10));
+                        user.getLabelFriends().setPadding(new Insets(10));
+                        user.getStatusDefault().setPadding(new Insets(10));
+                        user.getProfileDefault().setFitWidth(300);
+                        user.getProfileDefault().setPreserveRatio(true);
+                        center.getChildren().clear();
+
+                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+                        borderPane.setCenter(center);
+                    }
+                }
             }
         }
+            else if(e.getSource()==changePicture ){
+                String userNOW = topText.getText();
+
+                for (profileBase user : users) {
+                    if (Objects.equals(user.getNameForButton(), userNOW)) {
+
+                        user.statusDefault = new Label(changeStatusText.getText());
+                        GridPane.setConstraints(user.getNameLabel(), 0, 0);
+                        GridPane.setConstraints(user.getLabelFriends(), 1, 0);
+                        GridPane.setConstraints(user.getProfileDefault(), 0, 1);
+                        GridPane.setConstraints(user.getStatusDefault(), 0, 2);
+                        user.getNameLabel().setPadding(new Insets(10));
+                        user.getLabelFriends().setPadding(new Insets(10));
+                        user.getStatusDefault().setPadding(new Insets(10));
+                        user.getProfileDefault().setFitWidth(300);
+                        user.getProfileDefault().setPreserveRatio(true);
+                        center.getChildren().clear();
+                        center.getChildren().addAll(user.getNameLabel(), user.getLabelFriends(), user.getProfileDefault(), user.getStatusDefault());
+                        borderPane.setCenter(center);
+                    }
+                }
+        }
+            else if(e.getSource()==addFriend){
+
+        }
+    }
     }
 
 

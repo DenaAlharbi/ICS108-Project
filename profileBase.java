@@ -3,19 +3,21 @@ package com.example.ics108project;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 
 public class profileBase extends parent{
 
         private Label nameLabel;
+        private String nameForButton;
         private ImageView profileImage;
         private Label statusLabel;
 
-        public profileBase(User user) {
+        public profileBase(String name) {
+            this.nameLabel= new Label(name);
+            this.nameForButton= name;
             //Label labelName =new Label(user.getName());
             //Label labelName = new Label(user.getName());
             //profileImage = new ImageView(new Image(user.getProfilePicture()));
-            statusLabel = new Label(user.getStatus());
+            //statusLabel = new Label(user.getStatus());
 
             //getChildren().addAll(nameLabel, profileImage, statusLabel);
         }
@@ -39,5 +41,12 @@ public class profileBase extends parent{
 
     public Label getStatusDefault() {
         return statusDefault;
+    }
+    public Label getNameLabel(){
+        return nameLabel;
+    }
+
+    public String getNameForButton(){
+        return nameForButton;
     }
 }
