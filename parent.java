@@ -53,6 +53,7 @@ public class parent extends Application {
     TextField changePicText = new TextField();
     TextField changeStatusText = new TextField();
     TextField addFriendText = new TextField();
+    int IDnum = 0;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -121,38 +122,50 @@ public class parent extends Application {
         public void handle(ActionEvent e) {
             String userNOW = topText.getText();
 
+
             if (e.getSource() == addButton) {
                 String nameRN = topText.getText();
-                profileBase newUserBase = new profileBase(nameRN);
-                users.add(newUserBase);
-                Label nameLabelUpdated = newUserBase.getNameLabel();
-                PicFrame.getChildren().add(newUserBase.getProfileDefault());
-                PicFrame.setPrefWidth(300);
-                PicFrame.getChildren().add(newUserBase.getProfileDefault());
+                for (profileBase userAddress : users) {
+                    if (!users.contains(userAddress)) {
+                        profileBase newUserBase = new profileBase(nameRN);
+                        users.add(newUserBase);
+                        IDnum++;
+                        newUserBase.getId(IDnum);
+                        Label nameLabelUpdated = newUserBase.getNameLabel();
+                        PicFrame.getChildren().add(newUserBase.getProfileDefault());
+                        PicFrame.setPrefWidth(300);
+                        PicFrame.getChildren().add(newUserBase.getProfileDefault());
 
-                GridPane.setConstraints(nameLabelUpdated, 0, 0);
-                GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
-                GridPane.setConstraints(PicFrame, 0, 1);
-                GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
-                GridPane.setConstraints(friendsVbox, 1, 1);
-                nameLabelUpdated.setPadding(new Insets(10));
-                newUserBase.getLabelFriends().setPadding(new Insets(10));
-                newUserBase.getStatusDefault().setPadding(new Insets(10));
-                newUserBase.getProfileDefault().setFitWidth(300);
-                newUserBase.getProfileDefault().setPreserveRatio(true);
-                friendsVbox.getChildren().clear();
-                //updateLabel = new Label("A new user has been added");
-                //updateLabelPane.getChildren().add(updateLabel);
-                //GridPane.setHalignment(updateLabelPane, HPos.CENTER);
-                //GridPane.setValignment(updateLabelPane, VPos.BOTTOM);
+                        GridPane.setConstraints(nameLabelUpdated, 0, 0);
+                        GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
+                        GridPane.setConstraints(PicFrame, 0, 1);
+                        GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
+                        GridPane.setConstraints(friendsVbox, 1, 1);
+                        nameLabelUpdated.setPadding(new Insets(10));
+                        newUserBase.getLabelFriends().setPadding(new Insets(10));
+                        newUserBase.getStatusDefault().setPadding(new Insets(10));
+                        newUserBase.getProfileDefault().setFitWidth(300);
+                        newUserBase.getProfileDefault().setPreserveRatio(true);
+                        friendsVbox.getChildren().clear();
+                        //updateLabel = new Label("A new user has been added");
+                        //updateLabelPane.getChildren().add(updateLabel);
+                        //GridPane.setHalignment(updateLabelPane, HPos.CENTER);
+                        //GridPane.setValignment(updateLabelPane, VPos.BOTTOM);
 
-                center.getChildren().clear();
-                //center.getChildren().add(updateLabelPane, 0, center.getRowCount());
+                        center.getChildren().clear();
+                        //center.getChildren().add(updateLabelPane, 0, center.getRowCount());
 
 
-                center.getChildren().addAll(friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
-                //center.getChildren().add(newUserPane);
-                borderPane.setCenter(center);
+                        center.getChildren().addAll(friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
+                        //center.getChildren().add(newUserPane);
+                        borderPane.setCenter(center);
+                    }
+                    else{
+                        center.getChildren().clear();
+                        errorLabel = new Label("The user already exists- enter the lookup button...");
+                        center.getChildren().add(errorMessagePane);
+                    }
+                }
             } else if (e.getSource() == deleteButton) {
                 for (profileBase user : users) {
 
@@ -160,6 +173,10 @@ public class parent extends Application {
                         users.remove(user);
                         center.getChildren().clear();
                         center.getChildren().add(userRemovedPane);
+                    } else if (!users.contains(user)) {
+                        center.getChildren().clear();
+                        errorLabel = new Label("The user doesnt exists- enter the add button to add the profile...");
+                        center.getChildren().add(errorMessagePane);
                     }
                 }
             } else if (e.getSource() == lookupButton) {
@@ -167,14 +184,26 @@ public class parent extends Application {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
                         display(user);
                     }
+                    else if (!users.contains(user)) {
+                        center.getChildren().clear();
+                        errorLabel = new Label("The user doesnt exists- enter the add button to add the profile...");
+                        center.getChildren().add(errorMessagePane);
+                    }
                 }
             } else if (e.getSource() == changeStatus) {
 
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
-
                         user.statusDefault = new Label(changeStatusText.getText());
                         display(user);
+                    } else if (!users.contains(user)) {
+                        center.getChildren().clear();
+                        errorLabel = new Label("The user doesnt exists- enter the add button to add the profile...");
+                        center.getChildren().add(errorMessagePane);
+                    } else if (userNOW.isEmpty()) {
+                        center.getChildren().clear();
+                        errorLabel = new Label("Please pick a profile");
+                        center.getChildren().add(errorMessagePane);
                     }
                 }
             } else if (e.getSource() == changePicture) {
@@ -183,11 +212,16 @@ public class parent extends Application {
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
                         user.profileDefault = new ImageView(new Image(changePicText.getText()));
                         display(user);
+                    }else if (userNOW.isEmpty()) {
+                        center.getChildren().clear();
+                        errorLabel = new Label("Please pick a profile");
+                        center.getChildren().add(errorMessagePane);
                     }
                 }
             } else if (e.getSource() == addFriend) {
 
                 for (profileBase user : users) {
+
                     if (Objects.equals(user.getNameForButton(), userNOW)) {
                         for (profileBase userADD : users) {
                             if (Objects.equals(userADD.getNameForButton(), addFriendText.getText())) {
@@ -195,7 +229,7 @@ public class parent extends Application {
                                 userADD.getMyFriends().add(user);
                                 System.out.print(user.getMyFriends());
                                 System.out.print(userADD.getMyFriends());
-                            }
+                            } //we need a condition here for what if the user that we want to add doesnt exist
                         }
                     }
                     if (Objects.equals(user.getNameForButton(), userNOW)) {

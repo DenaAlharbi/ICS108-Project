@@ -14,6 +14,7 @@ public class profileBase extends parent{
         private ImageView profileImage;
         private Label statusLabel;
         private ArrayList<profileBase> myFriends= new ArrayList<>();
+        private int id;
 
         public profileBase(String name) {
             this.nameLabel = new Label(name);
@@ -47,4 +48,8 @@ public class profileBase extends parent{
         return nameForButton;
     }
     public ArrayList<profileBase> getMyFriends(){return myFriends;}
+
+    public int getId(int num) {
+        return id = num;
+    }
 }
