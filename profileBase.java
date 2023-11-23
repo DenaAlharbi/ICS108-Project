@@ -50,6 +50,6 @@ public class profileBase extends parent{
     public ArrayList<profileBase> getMyFriends(){return myFriends;}
 
     public int getId(int num) {
-        return id = num;
+        return id=num;
     }
 }
