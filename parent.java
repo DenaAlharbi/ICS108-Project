@@ -24,6 +24,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class parent extends Application {
     ArrayList<profileBase> users = new ArrayList<profileBase>();
@@ -463,6 +466,13 @@ public class parent extends Application {
         borderPane.setCenter(stackPane);
 
     }
+    public void stop() throws Exception {
+        writer.writeData(users);
+    }
+
+
+
+
 
 
     public static void main(String[] args) {
