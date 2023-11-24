@@ -31,6 +31,7 @@ public class parent extends Application {
     BorderPane borderPane = new BorderPane();
     StackPane stackPane = new StackPane();
     HBox errorMessagePane = new HBox();
+
     StackPane welcomePane = new StackPane();
     Pane updateLabelPane = new Pane();
     VBox friendsVbox = new VBox();
@@ -61,6 +62,9 @@ public class parent extends Application {
     TextField addFriendText = new TextField();
     ImageView imageWelcome = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\WelcomePic.png"));
     int IDnum = 0;
+    HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+    VBox vertical = new VBox(30, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus));
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -105,19 +109,17 @@ public class parent extends Application {
 
 
         //setting up
-        VBox vertical = new VBox(30, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus));
         vertical.setStyle("-fx-background-color: #b6d9aa;-fx-background-radius: 4;");
         vertical.setSpacing(20); //doesnt work
         vertical.setPrefSize(300, 100);
         vertical.setAlignment(Pos.CENTER);
         vertical.setPadding(new Insets(0, 10, 0, 10));
 
-        HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
         horizontal.setAlignment(Pos.CENTER);
         horizontal.setStyle("-fx-background-color: #b6d9aa;-fx-background-radius: 4;");
         horizontal.setPrefSize(100, 100);
 
-        friendsVbox.setStyle("-fx-background-color: #2e5730;");
+        friendsVbox.setStyle("-fx-background-color: #c2cec3;");
         friendsVbox.setPrefSize(50, 50);
         friendsVbox.setPadding(new Insets(0, 10, 0, 10));
 
@@ -346,119 +348,125 @@ public class parent extends Application {
                     ErrorPane(errorLabel);
 
 
-                } else if (!checkerButtonForMainUser) {
+                }
+                if (!checkerButtonForMainUser) {
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), userNOW)) {
                             checkerButtonForMainUser = true;
                             break;
                         }
                     }
-                } else if (!checkerButtonForAddedUser) {
+                }
+                if (!checkerButtonForAddedUser) {
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), addFriendText.getText())) {
                             checkerButtonForAddedUser = true;
                             break;
                         }
                     }
-                    if (checkerButtonForMainUser && checkerButtonForAddedUser) {
-                        for (profileBase user : users) {
+                }
+                if (checkerButtonForMainUser && checkerButtonForAddedUser) {
+                    for (profileBase user : users) {
 
-                            if (Objects.equals(user.getNameForButton(), userNOW)) {
-                                for (profileBase userADD : users) {
-                                    if (Objects.equals(userADD.getNameForButton(), addFriendText.getText())) {
-                                        user.getMyFriends().add(userADD);
-                                        userADD.getMyFriends().add(user);
-                                    }
+                        if (Objects.equals(user.getNameForButton(), userNOW)) {
+                            for (profileBase userADD : users) {
+                                if (Objects.equals(userADD.getNameForButton(), addFriendText.getText())) {
+                                    user.getMyFriends().add(userADD);
+                                    userADD.getMyFriends().add(user);
                                 }
                             }
-                            if (Objects.equals(user.getNameForButton(), userNOW)) {
-                                display(user);
-                            }
                         }
-                    } else if (!checkerButtonForAddedUser) {
-                        errorLabel = new Label("THE USER YOU WANT TO ADD DOES NOT EXIST!");
-                        ErrorPane(errorLabel);
-                    } else if (!checkerButtonForMainUser) {
-                        errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!");
-                        ErrorPane(errorLabel);
+                        if (Objects.equals(user.getNameForButton(), userNOW)) {
+                            display(user);
+                        }
                     }
-
-
+                } else if (!checkerButtonForAddedUser) {
+                    errorLabel = new Label("THE USER YOU WANT TO ADD DOES NOT EXIST!");
+                    ErrorPane(errorLabel);
+                } else if (!checkerButtonForMainUser) {
+                    errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!");
+                    ErrorPane(errorLabel);
                 }
-                if (e.getSource() == DismissButton) {
-                    stackPane.getChildren().remove(errorMessagePane);
-                    borderPane.setCenter(stackPane);
 
-
-                }
 
             }
-
-        }
-
-        public void display(profileBase user) {
-            PicFrame.getChildren().clear();
-            PicFrame.getChildren().add(user.getProfileDefault());
-            GridPane.setConstraints(PicFrame, 0, 1);
-            user.getProfileDefault().setFitWidth(300);
-            user.getProfileDefault().setPreserveRatio(true);
-
-            GridPane.setConstraints(user.getNameLabel(), 0, 0);
-            GridPane.setConstraints(user.getLabelFriends(), 1, 0);
-            GridPane.setConstraints(user.getStatusDefault(), 0, 2);
-
-            user.getNameLabel().setPadding(new Insets(10));
-            user.getLabelFriends().setPadding(new Insets(10));
-            user.getStatusDefault().setPadding(new Insets(10));
-
-            GridPane.setConstraints(friendsVbox, 1, 1);
-            friendsVbox.getChildren().clear();
-            if (!user.getMyFriends().isEmpty()) {
-                for (profileBase userAddress : user.getMyFriends()) {
-                    if (users.contains(userAddress)) {
-                        Label label = new Label(userAddress.getNameForButton());
-                        friendsVbox.getChildren().add(label);
-                        center.getChildren().clear();
-                        center.getChildren().addAll(friendsVbox, user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
-                        stackPane.getChildren().clear();
-                        stackPane.getChildren().add(center);
-                        borderPane.setCenter(stackPane);
-                    } else {
-                        errorLabel = new Label("The user you have chosen as a friend does not exist");
-                        ErrorPane(errorLabel);
-                    }
-
-                }
-            } else {
-                center.getChildren().clear();
-                center.getChildren().addAll(friendsVbox, user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
-                stackPane.getChildren().add(center);
+            if (e.getSource() == DismissButton) {
+                stackPane.getChildren().remove(errorMessagePane);
+                borderPane.getChildren().clear();
+                borderPane.setLeft(vertical);
+                borderPane.setTop(horizontal);
                 borderPane.setCenter(stackPane);
+
+
+            }
+
+        }
+
+    }
+
+    public void display(profileBase user) {
+        PicFrame.getChildren().clear();
+        PicFrame.getChildren().add(user.getProfileDefault());
+        GridPane.setConstraints(PicFrame, 0, 1);
+        user.getProfileDefault().setFitWidth(300);
+        user.getProfileDefault().setPreserveRatio(true);
+
+        GridPane.setConstraints(user.getNameLabel(), 0, 0);
+        GridPane.setConstraints(user.getLabelFriends(), 1, 0);
+        GridPane.setConstraints(user.getStatusDefault(), 0, 2);
+
+        user.getNameLabel().setPadding(new Insets(10));
+        user.getLabelFriends().setPadding(new Insets(10));
+        user.getStatusDefault().setPadding(new Insets(10));
+
+        GridPane.setConstraints(friendsVbox, 1, 1);
+        friendsVbox.getChildren().clear();
+        if (!user.getMyFriends().isEmpty()) {
+            for (profileBase userAddress : user.getMyFriends()) {
+                if (users.contains(userAddress)) {
+                    Label label = new Label(userAddress.getNameForButton());
+                    friendsVbox.getChildren().add(label);
+
+                } else {
+                    errorLabel = new Label("The user you have chosen as a friend does not exist");
+                    ErrorPane(errorLabel);
+                }
+
             }
         }
+        center.getChildren().clear();
+        center.getChildren().addAll(friendsVbox, user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
+        stackPane.getChildren().clear();
+        stackPane.getChildren().add(center);
+        borderPane.getChildren().clear();
+        borderPane.setLeft(vertical);
+        borderPane.setTop(horizontal);
+        borderPane.setCenter(stackPane);
+
+    }
 
 
-        public void ErrorPane(Label errorLabel) {
-            errorMessagePane = new HBox(10, DismissButton, errorLabel);
-            errorMessagePane.setPadding(new Insets(10));
-            errorMessagePane.setAlignment(Pos.CENTER);
-            errorMessagePane.setStyle("-fx-background-color: #e8e7e7;-fx-background-radius: 10;-fx-border-color: #da4d4d;-fx-border-radius: 10");
-            errorMessagePane.getChildren().clear();
-            errorMessagePane.getChildren().addAll(errorLabel,DismissButton);
-            errorMessagePane.setMinSize(200, 50);
-            errorMessagePane.setMaxSize(300, 50);
-            errorLabel.setMaxWidth(Double.MAX_VALUE);
-            HBox.setHgrow(errorLabel, Priority.ALWAYS);
+    public void ErrorPane(Label errorLabel) {
+        errorMessagePane = new HBox(10, DismissButton, errorLabel);
+        errorMessagePane.setPadding(new Insets(10));
+        errorMessagePane.setAlignment(Pos.CENTER);
+        errorMessagePane.setStyle("-fx-background-color: #e8e7e7;-fx-background-radius: 10;-fx-border-color: #da4d4d;-fx-border-radius: 10");
+        errorMessagePane.getChildren().clear();
+        errorMessagePane.getChildren().addAll(errorLabel, DismissButton);
+        errorMessagePane.setMinSize(200, 50);
+        errorMessagePane.setMaxSize(300, 50);
+        errorLabel.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(errorLabel, Priority.ALWAYS);
 
-            stackPane.getChildren().clear();
-            stackPane.getChildren().addAll(center, errorMessagePane);
-            borderPane.setCenter(stackPane);
+        stackPane.getChildren().clear();
+        stackPane.getChildren().addAll(center, errorMessagePane);
+        borderPane.setCenter(stackPane);
 
-        }
+    }
 
 
-        public static void main(String[] args) {
-            launch(args);
-        }
+    public static void main(String[] args) {
+        launch(args);
     }
 }
+
