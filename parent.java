@@ -140,7 +140,6 @@ public class parent extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
     public class ButtonHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             String userNOW = topText.getText();
@@ -324,6 +323,10 @@ public class parent extends Application {
                             break;
                         }
                     }
+                    if (!checkerButton) {
+                        errorLabel = new Label("THE USER DOES NOT EXIST!");
+                        ErrorPane(errorLabel);
+                    }
                 }
                 if (checkerButton) {
                     for (profileBase user : users) {
@@ -332,9 +335,6 @@ public class parent extends Application {
                             display(user);
                         }
                     }
-                } else if (!checkerButton) {
-                    errorLabel = new Label("THE USER DOES NOT EXIST!");
-                    ErrorPane(errorLabel);
                 }
 
 
@@ -407,6 +407,7 @@ public class parent extends Application {
 
     }
 
+
     public void display(profileBase user) {
         PicFrame.getChildren().clear();
         PicFrame.getChildren().add(user.getProfileDefault());
@@ -466,13 +467,11 @@ public class parent extends Application {
         borderPane.setCenter(stackPane);
 
     }
+
+
     public void stop() throws Exception {
         writer.writeData(users);
     }
-
-
-
-
 
 
     public static void main(String[] args) {

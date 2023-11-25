@@ -7,23 +7,24 @@ import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 
-public class profileBase extends parent{
+public class profileBase extends parent {
 
-        private Label nameLabel;
-        private String nameForButton;
-        private ImageView profileImage;
-        private Label statusLabel;
-        private ArrayList<profileBase> myFriends= new ArrayList<>();
-        private int id;
+    private Label nameLabel;
+    private String nameForButton;
+    private ImageView profileImage;
+    private Label statusLabel;
+    private ArrayList<profileBase> myFriends = new ArrayList<>();
+    private int id;
 
-        public profileBase(String name) {
-            this.nameLabel = new Label(name);
-            this.nameForButton = name;
-        }
-        Label labelFriends = new Label("Friends ");
+    public profileBase(String name) {
+        this.nameLabel = new Label(name);
+        this.nameForButton = name;
+    }
 
-        ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
-        Label statusDefault = new Label("No current status");
+    Label labelFriends = new Label("Friends ");
+
+    ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
+    Label statusDefault = new Label("No current status");
 
     public Label getLabelFriends() {
         return labelFriends;
@@ -33,23 +34,27 @@ public class profileBase extends parent{
         return profileDefault;
     }
 
-   // public Label getLabelName() {
-        //return labelName;
-   // }
+    // public Label getLabelName() {
+    //return labelName;
+    // }
 
     public Label getStatusDefault() {
         return statusDefault;
     }
-    public Label getNameLabel(){
+
+    public Label getNameLabel() {
         return nameLabel;
     }
 
-    public String getNameForButton(){
+    public String getNameForButton() {
         return nameForButton;
     }
-    public ArrayList<profileBase> getMyFriends(){return myFriends;}
+
+    public ArrayList<profileBase> getMyFriends() {
+        return myFriends;
+    }
 
     public int getId(int num) {
-        return id=num;
+        return id = num;
     }
 }
