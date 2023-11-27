@@ -1,4 +1,4 @@
-package com.example.ics108project;
+package com.example.project1;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

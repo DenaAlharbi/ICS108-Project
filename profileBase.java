@@ -1,13 +1,12 @@
-package com.example.ics108project;
+package com.example.project1;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 
-public class profileBase extends parent {
+public class profileBase extends Parent {
 
     private Label nameLabel;
     private String nameForButton;
@@ -23,7 +22,7 @@ public class profileBase extends parent {
 
     Label labelFriends = new Label("Friends ");
 
-    ImageView profileDefault = new ImageView(new Image("C:\\Users\\denaa\\JavaProjects231\\ICS108-project\\src\\main\\java\\com\\example\\ics108project\\defaultPIC.png"));
+    ImageView profileDefault = new ImageView(new Image("defaultPIC.png"));
     Label statusDefault = new Label("No current status");
 
     public Label getLabelFriends() {

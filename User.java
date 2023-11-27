@@ -1,4 +1,4 @@
-package com.example.ics108project;
+package com.example.project1;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
