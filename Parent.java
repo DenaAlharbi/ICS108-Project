@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Parent extends Application {
+public class parent extends Application {
     ArrayList<profileBase> users = new ArrayList<profileBase>();
     //borders
     BorderPane borderPane = new BorderPane();
@@ -116,7 +116,7 @@ public class Parent extends Application {
         horizontal.setStyle("-fx-background-color: #faeef9;-fx-background-radius: 4;");
         horizontal.setPrefSize(100, 100);
 
-        friendsVbox.setStyle("-fx-background-color: #faeef9;");
+        friendsVbox.setStyle("-fx-background-color: #d8e2eb;");
         friendsVbox.setPrefSize(50, 50);
         friendsVbox.setPadding(new Insets(0, 10, 0, 10));
 
