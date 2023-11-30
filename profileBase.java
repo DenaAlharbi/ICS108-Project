@@ -6,13 +6,12 @@ import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
-public class profileBase extends Parent {
+public class profileBase extends parent {
 
     private Label nameLabel;
-    private String nameForButton;
-    private ImageView profileImage;
-    private Label statusLabel;
-    private ArrayList<profileBase> myFriends = new ArrayList<>();
+    private String nameForButton, picPath,myFriendsRR= "[",finStatus;
+
+    private ArrayList<String> myFriends = new ArrayList<>();
     private int id;
 
     public profileBase(String name) {
@@ -22,7 +21,7 @@ public class profileBase extends Parent {
 
     Label labelFriends = new Label("Friends ");
 
-    ImageView profileDefault = new ImageView(new Image("defaultPIC.png"));
+    ImageView profileDefault = null;
     Label statusDefault = new Label("No current status");
 
     public Label getLabelFriends() {
@@ -49,11 +48,46 @@ public class profileBase extends Parent {
         return nameForButton;
     }
 
-    public ArrayList<profileBase> getMyFriends() {
+    public ArrayList<String> getMyFriends() {
         return myFriends;
     }
+    public String getMyFriendsUpdate(String NEW) {
+        if (NEW.equals("No-Friends")) {
+            myFriendsRR="No-Friends";
+        }
+        else if(myFriendsRR.equals("["))
+            myFriendsRR = myFriendsRR+ NEW;
+        else if (!myFriendsRR.equals("[")&& !myFriendsRR.endsWith("]"))
+            myFriendsRR = myFriendsRR+"," +NEW ;
+        else if (myFriendsRR.endsWith("]")) {
+            myFriendsRR=myFriendsRR.substring(0,myFriendsRR.length()-1);
+            myFriendsRR = myFriendsRR+"," +NEW+"]";
+        }
+        return myFriendsRR;
+
+
+    }
+    public String getMyFriendsRR() {
+        return myFriendsRR;
+    }
+
 
     public int getId(int num) {
         return id = num;
     }
+    public String getPicPath(String path){
+        return picPath= path;
+    }
+    public String getPicPathRR(){
+        return picPath;
+
+    }
+    public String getFinStatus(String stat){
+        return finStatus= stat;
+    }
+    public String getFinSatusRR(){
+        return finStatus;
+
+    }
+
 }

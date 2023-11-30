@@ -1,19 +1,42 @@
 package com.example.project1;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
 
-public class writer extends Parent {
+public class writer extends parent {
 
-    private static final String FILE_NAME = "data.txt";
+     static String FILE_NAME = "data.txt";
+
+
 
     public static void writeData(ArrayList<profileBase> users) {
-        try (PrintWriter writer = new PrintWriter(FILE_NAME)) {
-            for (profileBase user : users) {
-                writer.println(user.getNameForButton()+ "@" + user.getProfileDefault() + "@" + user.getStatusDefault() + "@" + user.getMyFriends());
+         String previousData = "";
+
+        Scanner input= new Scanner(FILE_NAME);
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileWriter(FILE_NAME, true));
+            if(!(FILE_NAME.length()==0)){
+                while(input.hasNext()){
+                    previousData = previousData +"\n"+input.nextLine();
+                }
             }
-        writer.close();
+            for (profileBase user : users) {
+                if (user.getPicPathRR()==null)
+                    user.getPicPath("No-Image");
+                if (user.getFinSatusRR()==null)
+                    user.getFinStatus("No-current-status");
+                if (user.getMyFriendsRR().equals("["))
+                    user.getMyFriendsUpdate("No-Friends");
+
+                printWriter.println(user.getNameForButton()+ " " + user.getPicPathRR() + " "  + user.getFinSatusRR() + " " + user.getMyFriendsRR());
+            }
+            //printWriter.println(previousData);
+        printWriter.close();
         }
         catch (IOException e) {
             e.printStackTrace();
