@@ -8,11 +8,10 @@ import java.util.ArrayList;
 
 public class profileBase extends parent {
 
-    private Label nameLabel;
-    private String nameForButton, picPath,myFriendsRR= "[",finStatus;
+   private Label nameLabel;
+    private String nameForButton, picPath, myFriendsRR = "[", finStatus;
 
     private ArrayList<String> myFriends = new ArrayList<>();
-    private int id;
 
     public profileBase(String name) {
         this.nameLabel = new Label(name);
@@ -32,13 +31,19 @@ public class profileBase extends parent {
         return profileDefault;
     }
 
-    // public Label getLabelName() {
-    //return labelName;
-    // }
+    public void getProfileDefault(String s) {
+        profileDefault = new ImageView(new Image(s));
+    }
+
 
     public Label getStatusDefault() {
         return statusDefault;
     }
+
+    public void getStatusDefault(String s) {
+        statusDefault = new Label(s);
+    }
+
 
     public Label getNameLabel() {
         return nameLabel;
@@ -51,41 +56,49 @@ public class profileBase extends parent {
     public ArrayList<String> getMyFriends() {
         return myFriends;
     }
-    public String getMyFriendsUpdate(String NEW) {
+
+    public void getMyFriends(ArrayList<String> s) {
+        myFriends = s;
+    }
+
+    public void getMyFriendsUpdate(String NEW) {
         if (NEW.equals("No-Friends")) {
-            myFriendsRR="No-Friends";
-        }
-        else if(myFriendsRR.equals("["))
-            myFriendsRR = myFriendsRR+ NEW;
-        else if (!myFriendsRR.equals("[")&& !myFriendsRR.endsWith("]"))
-            myFriendsRR = myFriendsRR+"," +NEW ;
+            myFriendsRR = "No-Friends";
+        } else if (myFriendsRR.equals("["))
+            myFriendsRR = myFriendsRR + NEW + "]";
+        else if (!myFriendsRR.equals("[") && !myFriendsRR.endsWith("]"))
+            myFriendsRR = myFriendsRR + "," + NEW;
         else if (myFriendsRR.endsWith("]")) {
-            myFriendsRR=myFriendsRR.substring(0,myFriendsRR.length()-1);
-            myFriendsRR = myFriendsRR+"," +NEW+"]";
+            myFriendsRR = myFriendsRR.substring(0, myFriendsRR.length() - 1);
+            myFriendsRR = myFriendsRR + "," + NEW + "]";
         }
-        return myFriendsRR;
 
 
     }
+
     public String getMyFriendsRR() {
         return myFriendsRR;
     }
 
+    public void getMyFriendsupdateRR(String s) {
+        myFriendsRR = s;
+    }
 
-    public int getId(int num) {
-        return id = num;
+
+    public void getPicPath(String path) {
+        picPath = path;
     }
-    public String getPicPath(String path){
-        return picPath= path;
-    }
-    public String getPicPathRR(){
+
+    public String getPicPathRR() {
         return picPath;
 
     }
-    public String getFinStatus(String stat){
-        return finStatus= stat;
+
+    public void getFinStatus(String stat) {
+        finStatus = stat;
     }
-    public String getFinSatusRR(){
+
+    public String getFinStatusRR() {
         return finStatus;
 
     }
