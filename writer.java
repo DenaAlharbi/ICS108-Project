@@ -19,26 +19,20 @@ public class writer extends parent {
 
         Scanner input= new Scanner(FILE_NAME);
         try {
+            new FileWriter(FILE_NAME, false).close();
             PrintWriter printWriter = new PrintWriter(new FileWriter(FILE_NAME, true));
-            if(!(FILE_NAME.length()==0)){
-                while(input.hasNext()){
-                    previousData = previousData +"\n"+input.nextLine();
-                }
-            }
             for (profileBase user : users) {
-                if (user.getPicPathRR()==null)
+                if (user.getPicPathRR() == null)
                     user.getPicPath("No-Image");
-                if (user.getFinSatusRR()==null)
+                if (user.getFinSatusRR() == null)
                     user.getFinStatus("No-current-status");
                 if (user.getMyFriendsRR().equals("["))
                     user.getMyFriendsUpdate("No-Friends");
 
-                printWriter.println(user.getNameForButton()+ " " + user.getPicPathRR() + " "  + user.getFinSatusRR() + " " + user.getMyFriendsRR());
+                printWriter.println(user.getNameForButton() + "@" + user.getPicPathRR() + "@" + user.getFinSatusRR() + "@" + user.getMyFriendsRR());
             }
-            //printWriter.println(previousData);
-        printWriter.close();
-        }
-        catch (IOException e) {
+            printWriter.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
