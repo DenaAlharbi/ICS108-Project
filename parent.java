@@ -8,7 +8,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,17 +18,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class parent extends Application {
-    static String FILE_NAME = "data.txt";
+    static String FILE_NAME = "C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\java\\com\\example\\project1\\data.txt";
     ArrayList<profileBase> users = new ArrayList<>();
     ArrayList<String[]> Retriever = new ArrayList<>();
 
-    //String[]  Retrieve = new String[4];
     //borders
     BorderPane borderPane = new BorderPane();
 
@@ -74,6 +75,8 @@ public class parent extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //array list of users and their data
+
+
         try (Scanner input = new Scanner(new File(FILE_NAME))) {
             while (input.hasNextLine()) {
                 String newString = input.nextLine();
@@ -104,11 +107,11 @@ public class parent extends Application {
             //System.out.println(newUserBase);
 
 
-            if (!strings[1].equals("No-Image")){
+            if (!strings[1].equals("No-Image")) {
                 newUserBase.getProfileDefault(strings[1]);
                 newUserBase.getPicPath(strings[1]);
             }
-            if (!strings[2].equals("No-current-status")){
+            if (!strings[2].equals("No-current-status")) {
                 newUserBase.getStatusDefault(strings[2]);
                 newUserBase.getFinStatus(strings[2]);
             }
@@ -125,12 +128,7 @@ public class parent extends Application {
             }
 
         }
-       
-
-
-
-
-
+        //System.out.println(users);
         //borders
         center.setStyle("-fx-background-color: #d8e2eb;-fx-background-radius: 4;");
 
@@ -160,6 +158,7 @@ public class parent extends Application {
         DismissButton.setOnAction(new ButtonHandler());
         DismissButton.setPadding(new Insets(10));
 
+
         //Temporary panes
         userRemovedPane.getChildren().add(userRemovedLabel);
         //errorMessagePane.getChildren().add(errorLabel);
@@ -188,7 +187,7 @@ public class parent extends Application {
 
         center.setVgap(8);
         center.setHgap(10);
-       // center.setPadding(new Insets(10));
+        // center.setPadding(new Insets(10));
         center.getChildren().add(welcomePane);
         borderPane.setLeft(vertical);
         borderPane.setTop(horizontal);
@@ -206,15 +205,13 @@ public class parent extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
     public class ButtonHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             String userNOW = topText.getText();
 
 
-            if (e.getSource() == addButton ) {
-                boolean checker = true;
-                String nameRN = topText.getText();
-              if (e.getSource() == addButton) {
+            if (e.getSource() == addButton) {
                 boolean checker = true;
                 String nameRN = topText.getText();
                 if (!nameRN.isEmpty()) {
@@ -381,6 +378,7 @@ public class parent extends Application {
             } else if (e.getSource() == addFriend) {
                 boolean checkerButtonForMainUser = false;
                 boolean checkerButtonForAddedUser = false;
+                boolean checkerNonDuplicate = false;
 
 
                 if (userNOW.isEmpty()) {
@@ -408,7 +406,33 @@ public class parent extends Application {
                         }
                     }
                 }
-                if (checkerButtonForMainUser && checkerButtonForAddedUser) {
+                if (!checkerNonDuplicate) {
+                    for (profileBase user : users) {
+                        if (Objects.equals(user.getNameForButton(), addFriendText.getText())) {
+                            if (!user.getMyFriends().isEmpty()) {
+                                for (String userName : user.getMyFriends()) {
+                                    if (Objects.equals(userNOW, userName)) {
+                                        errorLabel = new Label("The user you have chosen as a friend is already added");
+                                        ErrorPane(errorLabel);
+                                        checkerNonDuplicate = false;
+                                        break;
+                                    } else {
+                                        checkerNonDuplicate = true;
+                                        break;
+                                    }
+
+
+                                }
+                            } else {
+                                checkerNonDuplicate = true;
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                if (checkerButtonForMainUser && checkerButtonForAddedUser && checkerNonDuplicate) {
                     for (profileBase user : users) {
 
                         if (Objects.equals(user.getNameForButton(), userNOW)) {
@@ -416,13 +440,13 @@ public class parent extends Application {
                                 if (Objects.equals(userADD.getNameForButton(), addFriendText.getText())) {
                                     user.getMyFriends().add(userADD.getNameForButton());
                                     userADD.getMyFriends().add(user.getNameForButton());
-                                    for(int i =0; i<userADD.getMyFriends().size();i++){
+                                    for (int i = 0; i < userADD.getMyFriends().size(); i++) {
 
                                         userADD.getMyFriendsUpdate(userADD.getMyFriends().get(i));
                                     }
-                                    for(int i =0; i<user.getMyFriends().size();i++){
+                                    for (int i = 0; i < user.getMyFriends().size(); i++) {
 
-                                        user.getMyFriendsUpdate(user.getMyFriends().get(i)) ;
+                                        user.getMyFriendsUpdate(user.getMyFriends().get(i));
                                     }
                                 }
                             }
@@ -457,23 +481,24 @@ public class parent extends Application {
 
 
     public void display(profileBase user) {
-        if (!(user.getProfileDefault()==null)){
+        if (!(user.getProfileDefault() == null)) {
             PicFrame.getChildren().clear();
+            user.getProfileDefault().setFitWidth(300);
+            user.getProfileDefault().setPreserveRatio(true);
             PicFrame.getChildren().add(user.getProfileDefault());
 
-        }
-        else{
+
+        } else {
+            PicFrame.getChildren().clear();
+
             PicFrame.setPrefWidth(300);
             PicFrame.setPrefHeight(300);
             PicFrame.setStyle("-fx-border-color: black;");
             PicFrame.getChildren().add(NoimageLabel);
 
-       }
+        }
 
         GridPane.setConstraints(PicFrame, 0, 1);
-        user.getProfileDefault().setFitWidth(300);
-        user.getProfileDefault().setPreserveRatio(true);
-
         GridPane.setConstraints(user.getNameLabel(), 0, 0);
         GridPane.setConstraints(user.getLabelFriends(), 1, 0);
         GridPane.setConstraints(user.getStatusDefault(), 0, 2);
@@ -485,7 +510,7 @@ public class parent extends Application {
         GridPane.setConstraints(friendsVbox, 1, 1);
         friendsVbox.getChildren().clear();
         if (!user.getMyFriends().isEmpty()) {
-            for (String userName: user.getMyFriends()) {
+            for (String userName : user.getMyFriends()) {
                 if (users.contains(user)) {
                     Label label = new Label(userName);
                     friendsVbox.getChildren().add(label);
@@ -520,7 +545,6 @@ public class parent extends Application {
         errorMessagePane.setMaxSize(300, 50);
         errorLabel.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(errorLabel, Priority.ALWAYS);
-
         stackPane.getChildren().clear();
         stackPane.getChildren().addAll(center, errorMessagePane);
         borderPane.setCenter(stackPane);
