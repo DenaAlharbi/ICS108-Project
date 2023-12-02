@@ -74,28 +74,58 @@ public class parent extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //array list of users and their data
+        try (Scanner input = new Scanner(new File(FILE_NAME))) {
+            while (input.hasNextLine()) {
+                String newString = input.nextLine();
 
-        /*Scanner input= new Scanner(FILE_NAME);
-        while (input.hasNext()){
-            String newString= input.nextLine();
-            String[] arr = newString.split(" ");
-            Retriever.add(arr);
+                if (!newString.isEmpty()) {
+
+                    String[] arr = newString.split("@");
+                   /* for (int i = 0; i < arr.length; i++) {
+                        System.out.println(arr[i]);
+                    }*/
+
+
+                    Retriever.add(arr);
+                }
+            }
+            input.close();
+        } catch (FileNotFoundException e) {
+            System.err.format("File not found: %s%n", FILE_NAME);
         }
 
-            for (String[] strings : Retriever) {
-                try{
-                    profileBase newUserBase = new profileBase(strings[0]);
-                    if(newUserBase.getProfileDefault()== null)
 
-                        newUserBase.()= new ImageView(new Image(strings[1]));}
+        for (String[] strings : Retriever) {
+            //System.out.println(strings);
 
 
-                catch( NullPointerException e){
+            profileBase newUserBase = new profileBase(strings[0]);
+            users.add(newUserBase);
+            //System.out.println(newUserBase);
 
-                }
+
+            if (!strings[1].equals("No-Image")){
+                newUserBase.getProfileDefault(strings[1]);
+                newUserBase.getPicPath(strings[1]);
+            }
+            if (!strings[2].equals("No-current-status")){
+                newUserBase.getStatusDefault(strings[2]);
+                newUserBase.getFinStatus(strings[2]);
+            }
 
 
-            }*/
+            if (!strings[3].equals("No-Friends")) {
+                String in = strings[3];
+                String[] sub = in.substring(1, in.length() - 1).split(",");
+                ArrayList<String> list = new ArrayList<>(Arrays.asList(sub));
+                newUserBase.getMyFriends(list);
+                newUserBase.getMyFriendsupdateRR(strings[3]);
+                //System.out.println(list);
+
+            }
+
+        }
+       
 
 
 
