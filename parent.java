@@ -213,9 +213,11 @@ public class parent extends Application {
 
             if (e.getSource() == addButton ) {
                 boolean checker = true;
-
                 String nameRN = topText.getText();
-                /*if (!users.isEmpty()) {
+              if (e.getSource() == addButton) {
+                boolean checker = true;
+                String nameRN = topText.getText();
+                if (!nameRN.isEmpty()) {
                     for (profileBase userAddress : users) {
                         if (Objects.equals(userAddress.getNameForButton(), nameRN)) {
                             errorLabel = new Label("THIS USER ALREADY EXISTS!");
@@ -226,82 +228,50 @@ public class parent extends Application {
 
                     }
                     if (checker) {
+
+
                         profileBase newUserBase = new profileBase(nameRN);
                         users.add(newUserBase);
-                        IDnum++;
-                        newUserBase.getId(IDnum);
                         Label nameLabelUpdated = newUserBase.getNameLabel();
+                        PicFrame.getChildren().clear();
                         PicFrame.setPrefWidth(300);
-                        PicFrame.getChildren().add(newUserBase.getProfileDefault());
+                        PicFrame.setPrefHeight(300);
+                        PicFrame.setStyle("-fx-border-color: black;");
+                        PicFrame.getChildren().add(NoimageLabel);
 
                         GridPane.setConstraints(nameLabelUpdated, 0, 0);
                         GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
                         GridPane.setConstraints(PicFrame, 0, 1);
                         GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
                         GridPane.setConstraints(friendsVbox, 1, 1);
+                        GridPane.setConstraints(updateText, 0, 3);
                         nameLabelUpdated.setPadding(new Insets(10));
                         newUserBase.getLabelFriends().setPadding(new Insets(10));
                         newUserBase.getStatusDefault().setPadding(new Insets(10));
-                        newUserBase.getProfileDefault().setFitWidth(300);
-                        newUserBase.getProfileDefault().setPreserveRatio(true);
+                        //newUserBase.getProfileDefault().setFitWidth(300);
+                        //newUserBase.getProfileDefault().setPreserveRatio(true);
                         friendsVbox.getChildren().clear();
-                        updateLabel = new Label("A new user has been added");
-                        updateLabelPane.getChildren().add(updateLabel);
-                        GridPane.setHalignment(updateLabelPane, HPos.CENTER);
-                        GridPane.setValignment(updateLabelPane, VPos.BOTTOM);
+                        //updateText = new Text("A new user has been added");
+                        //updateLabelPane.getChildren().add(updateText);
+                        //StackPane.setAlignment(updateLabelPane, Pos.BOTTOM_CENTER);
+                        //StackPane.setMargin(updateLabelPane, new Insets(0, 0, 10, 0));
+
 
                         center.getChildren().clear();
+
                         //center.getChildren().add(updateLabelPane, 0, center.getRowCount());
-
-
-                        center.getChildren().addAll(updateLabelPane, friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
+                        //stackPane.getChildren().clear();
+                        //stackPane.getChildren().addAll(center,updateLabelPane);
+                        center.getChildren().addAll(friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
                         //center.getChildren().add(newUserPane);
+                        //borderPane.setCenter(stackPane);
                         borderPane.setCenter(center);
 
-                    }*/
+                    } else if (nameRN.isEmpty()) {
+                        errorLabel = new Label("ENTER A PROFILE NAME FIRST!");
+                        ErrorPane(errorLabel);
 
-
-                if (!nameRN.isEmpty()) {
-
-                    profileBase newUserBase = new profileBase(nameRN);
-                    users.add(newUserBase);
-                    Label nameLabelUpdated = newUserBase.getNameLabel();
-                    PicFrame.setPrefWidth(300);
-                    PicFrame.setPrefHeight(300);
-                    PicFrame.setStyle("-fx-border-color: black;");
-                    PicFrame.getChildren().add(NoimageLabel);
-
-                    GridPane.setConstraints(nameLabelUpdated, 0, 0);
-                    GridPane.setConstraints(newUserBase.getLabelFriends(), 1, 0);
-                    GridPane.setConstraints(PicFrame, 0, 1);
-                    GridPane.setConstraints(newUserBase.getStatusDefault(), 0, 2);
-                    GridPane.setConstraints(friendsVbox, 1, 1);
-                    GridPane.setConstraints(updateText, 0, 3);
-                    nameLabelUpdated.setPadding(new Insets(10));
-                    newUserBase.getLabelFriends().setPadding(new Insets(10));
-                    newUserBase.getStatusDefault().setPadding(new Insets(10));
-                    //newUserBase.getProfileDefault().setFitWidth(300);
-                    //newUserBase.getProfileDefault().setPreserveRatio(true);
-                    friendsVbox.getChildren().clear();
-                    updateText = new Text("A new user has been added");
-                    updateLabelPane.getChildren().add(updateText);
-                    //StackPane.setAlignment(updateLabelPane, Pos.BOTTOM_CENTER);
-                    //StackPane.setMargin(updateLabelPane, new Insets(0, 0, 10, 0));
-
-
-                    center.getChildren().clear();
-                    //center.getChildren().add(updateLabelPane, 0, center.getRowCount());
-                    //stackPane.getChildren().clear();
-                    //stackPane.getChildren().addAll(center,updateLabelPane);
-                    center.getChildren().addAll(friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
-                    //center.getChildren().add(newUserPane);
-                    //borderPane.setCenter(stackPane);
-                    borderPane.setCenter(center);
-
-                } else if (nameRN.isEmpty()) {
-                    errorLabel = new Label("ENTER A PROFILE NAME FIRST!");
-                    ErrorPane(errorLabel);
-
+                    }
                 }
 
 
