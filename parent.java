@@ -63,6 +63,7 @@ public class parent extends Application {
     Button changePicture = new Button("Change Picture");
 
     Button addFriend = new Button("Add Friend");
+    Button images = new Button("Image Gallery");
     TextField changePicText = new TextField();
     TextField changeStatusText = new TextField();
     TextField addFriendText = new TextField();
@@ -150,6 +151,7 @@ public class parent extends Application {
 
         // setonAction statements
         addButton.setOnAction(new ButtonHandler());
+        images.setOnAction(new ButtonHandler());
         deleteButton.setOnAction(new ButtonHandler());
         lookupButton.setOnAction(new ButtonHandler());
         changeStatus.setOnAction(new ButtonHandler());
@@ -340,14 +342,14 @@ public class parent extends Application {
                         }
                     }
                 } else if (!checkerButton) {
-                    errorLabel = new Label("THE USER DOES NOT EXIST!");
+                    errorLabel = new Label("Status can not be empty!");
                     ErrorPane(errorLabel);
                 }
             } else if (e.getSource() == changePicture) {
                 // WE NEED A CONDITION FOR IF THE PIC DOES NOT EXIST
                 boolean checkerButton = false;
                 if (userNOW.isEmpty()) {
-                    errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!!");
+                    errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!");
                     ErrorPane(errorLabel);
                 } else if (changePicText.getText().isEmpty()) {
                     errorLabel = new Label("ENTER A PICTURE PATH!");
@@ -475,8 +477,19 @@ public class parent extends Application {
                 }
 
 
-            } if (e.getSource() == DismissButton) {
+            }
+            if (e.getSource() == DismissButton) {
                 stackPane.getChildren().remove(errorMessagePane);
+                borderPane.getChildren().clear();
+                borderPane.setLeft(vertical);
+                borderPane.setTop(horizontal);
+                borderPane.setCenter(stackPane);
+
+
+            }
+            if (e.getSource() == images) {
+                stackPane.getChildren().clear();
+
                 borderPane.getChildren().clear();
                 borderPane.setLeft(vertical);
                 borderPane.setTop(horizontal);
