@@ -379,6 +379,7 @@ public class parent extends Application {
                 boolean checkerButtonForMainUser = false;
                 boolean checkerButtonForAddedUser = false;
                 boolean checkerNonDuplicate = false;
+                boolean checkerforusersamefriend = false;
 
 
                 if (userNOW.isEmpty()) {
@@ -406,12 +407,22 @@ public class parent extends Application {
                         }
                     }
                 }
+                if (!checkerforusersamefriend) {
+                    if (!userNOW.equals(addFriendText.getText())) {
+                        checkerforusersamefriend = true;
+                    } else {
+                        errorLabel = new Label("CANNOT ADD YOURSELF AS A FRIEND!");
+                        ErrorPane(errorLabel);
+
+                    }
+
+                }
                 if (!checkerNonDuplicate) {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), addFriendText.getText())) {
+                        if (Objects.equals(user.getNameForButton(), userNOW)) {
                             if (!user.getMyFriends().isEmpty()) {
                                 for (String userName : user.getMyFriends()) {
-                                    if (Objects.equals(userNOW, userName)) {
+                                    if (Objects.equals(addFriendText.getText(), userName)) {
                                         errorLabel = new Label("The user you have chosen as a friend is already added");
                                         ErrorPane(errorLabel);
                                         checkerNonDuplicate = false;
@@ -432,7 +443,7 @@ public class parent extends Application {
 
                 }
 
-                if (checkerButtonForMainUser && checkerButtonForAddedUser && checkerNonDuplicate) {
+                if (checkerButtonForMainUser && checkerButtonForAddedUser && checkerNonDuplicate && checkerforusersamefriend) {
                     for (profileBase user : users) {
 
                         if (Objects.equals(user.getNameForButton(), userNOW)) {
@@ -464,8 +475,7 @@ public class parent extends Application {
                 }
 
 
-            }
-            if (e.getSource() == DismissButton) {
+            } if (e.getSource() == DismissButton) {
                 stackPane.getChildren().remove(errorMessagePane);
                 borderPane.getChildren().clear();
                 borderPane.setLeft(vertical);
@@ -511,15 +521,14 @@ public class parent extends Application {
         friendsVbox.getChildren().clear();
         if (!user.getMyFriends().isEmpty()) {
             for (String userName : user.getMyFriends()) {
-                if (users.contains(user)) {
-                    Label label = new Label(userName);
-                    friendsVbox.getChildren().add(label);
+                for (profileBase userrr : users) {
 
-                } else {
-                    errorLabel = new Label("The user you have chosen as a friend does not exist");
-                    ErrorPane(errorLabel);
+                    if (userrr.getNameForButton().equals(userName)) {
+                        Label label = new Label(userName);
+                        friendsVbox.getChildren().add(label);
+
+                    }
                 }
-
             }
         }
         center.getChildren().clear();
