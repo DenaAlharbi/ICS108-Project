@@ -12,9 +12,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -27,6 +30,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
+
 public class parent extends Application {
     static String FILE_NAME = "C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\java\\com\\example\\project1\\data.txt";
 
@@ -38,6 +42,7 @@ public class parent extends Application {
 
     //Texts
     String topLast = "", addLast = "", pathLast = "", statusLast = "", addGuestLast = "";
+    Text welcome = new Text("Welcome");
     Text date = new Text(), numOfAccounts = new Text(), updateText = new Text(), welcomeText = new Text("Thanks for joining FaceLite!\n We hope you enjoy your experience.");
 
     Label bottomStatus, errorLabel = new Label("Error - You have to pick a profile first"), nameLabel = new Label("Name:");
@@ -50,12 +55,14 @@ public class parent extends Application {
     Button lookupButton = new Button("Lookup"), DismissButton = new Button("X"), changeStatus = new Button("Change Status");
     Button changePicture = new Button("Change Picture"), returnButton = new Button("Return to profile"), addFriend = new Button("Add Friend");
 
-    Button mainPage = new Button("Main Page"), images = new Button("Image Gallery"), createGroup = new Button("Create a group"), addEvent = new Button("Add Friend");
+    Button images = new Button("Image Gallery"), createGroup = new Button("Create an event blast"), addEvent = new Button("Add Friend"), submit = new Button("Submit");
 
     //Text Fields
     TextField changePicText = new TextField(), changeStatusText = new TextField(), addFriendText = new TextField(), userHost = new TextField(), EventName = new TextField(), addEventText = new TextField(), topText = new TextField();
 
     ImageView imageWelcome = new ImageView(new Image("WelcomePic.png"));
+    ImageView imageView = new ImageView(new Image("C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\resources\\f.png"));
+
     //Panes
 
     BorderPane borderPane = new BorderPane();
@@ -66,7 +73,7 @@ public class parent extends Application {
     StackPane PicFrame = new StackPane();
     StackPane stackPane = new StackPane();
     HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
-    VBox vertical = new VBox(30, mainPage, createGroup, images, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus));
+    VBox vertical = new VBox(30, createGroup, images, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus));
 
 
     @Override
@@ -106,8 +113,8 @@ public class parent extends Application {
             }
         }
 
-
         //Size altering
+        topText.setMinWidth(200);
         nameLabel.setMinWidth(50);
         nameLabel.setMinHeight(100);
         addFriendText.setMinWidth(100);
@@ -116,11 +123,8 @@ public class parent extends Application {
         changePicture.setMinWidth(300);
         changeStatus.setMinWidth(300);
         addFriend.setMinWidth(300);
-        topText.setMinWidth(200);
-        mainPage.setMinWidth(300);
         createGroup.setMinWidth(300);
         images.setMinWidth(300);
-
 
         // setonAction statements
         addButton.setOnAction(new ButtonHandler());
@@ -134,10 +138,8 @@ public class parent extends Application {
         createGroup.setOnAction(new ButtonHandler());
         DismissButton.setPadding(new Insets(10));
         addFriendEvent.setOnAction(new ButtonHandler());
-        mainPage.setOnAction(new ButtonHandler());
         addEvent.setOnAction(new ButtonHandler());
         returnButton.setOnAction(new ButtonHandler());
-
 
         //The code for making the buttons pressed when the Enter Key is pressed
         addFriendText.setOnKeyPressed(event -> {
@@ -158,28 +160,15 @@ public class parent extends Application {
             }
         });
 
-
         // Welcome Pane Styling
         date.setText("The date today is: " + LocalDate.now());
-        date.setStyle("-fx-font-size: 24; -fx-fill: white;");
+        date.setStyle("-fx-font-size: 18; -fx-fill: black;");
         this.numOfAccounts.setText("The Number Of Accounts is: " + numOfAccounts);
-        this.numOfAccounts.setStyle("-fx-font-size: 24; -fx-fill: white;");
+        this.numOfAccounts.setStyle("-fx-font-size: 24; -fx-fill: black;");
         center.getChildren().clear();
-        center.add(date, 0, 0);
-        center.add(this.numOfAccounts, 0, 1);
+        //center.add(date, 0, 0);
+        //center.add(this.numOfAccounts, 0, 1);
         GridPane.setHalignment(date, HPos.LEFT);
-
-
-        /*ScrollPane scrollPane = new ScrollPane();
-
-        VBox vbox = new VBox();
-        vbox.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 2px; -fx-padding: 10px;");
-
-
-        vbox.getChildren().addAll(new Label("Create a profile"), new Label("Add your friends"), new Label("Personalize your profile"));
-        vbox.setPrefSize(50, 50);
-;        scrollPane.setContent(vbox);
-*/
 
         //setting up the main panes
         vertical.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
@@ -195,14 +184,24 @@ public class parent extends Application {
         friendsVbox.setPrefSize(300, 200);
         friendsVbox.setPadding(new Insets(0, 10, 0, 10));
 
-        center.setStyle("-fx-background-color: #062746;-fx-background-radius: 4;");
-        center.setVgap(8);
+        center.setStyle("-fx-background-color:#dfeffa;-fx-background-size: cover;-fx-background-position: center;-fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px;");
+        center.setVgap(10);
         center.setHgap(10);
-        center.setPadding(new Insets(10));
+        center.setAlignment(Pos.CENTER);
+        center.setPadding(new Insets(25, 25, 25, 25));
 
-        borderPane.setTop(horizontal);
-        stackPane.getChildren().add(center);
-        borderPane.setCenter(stackPane);
+        welcome.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        center.add(welcome, 0, 0, 2, 1);
+
+        center.add(nameLabel, 0, 1);
+        center.add(topText, 1, 1);
+        center.add(addButton, 0, 2);
+        center.add(lookupButton, 1, 2);
+        imageView.setFitWidth(650);
+        imageView.setFitHeight(750);
+        borderPane.setRight(imageView);
+        borderPane.setCenter(center);
+        borderPane.setStyle("-fx-background-color: #041e41;-fx-border-color: black; -fx-border-width: 1px; ");
 
 
         Scene scene = new Scene(borderPane, 1100, 800);
@@ -212,6 +211,24 @@ public class parent extends Application {
     }
 
     public class ButtonHandler implements EventHandler<ActionEvent> {
+
+        private void copyImagePath(String imgPath) {
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(imgPath);
+            clipboard.setContent(content);
+        }
+
+        String[] paths = {
+                "pic1.jpeg",
+                "pic3.jpeg",
+                "pic4.jpeg",
+                "pic5.jpeg",
+                "pic6.jpeg",
+                "pic7.jpeg"
+        };
+        int checkerHost = 0;
+
 
         public void handle(ActionEvent e) {
 
@@ -285,15 +302,26 @@ public class parent extends Application {
                         bottomStatus.setFont(Font.font("Arial", 20));
                         center.add(bottomStatus, 1, 35);
 
-                        center.setStyle("-fx-background-image: url('/new.jpeg');-fx-background-size: cover;-fx-background-position: center;");
+                        center.setStyle("-fx-background-image: url('/profil3.jpg');-fx-background-size: cover;-fx-background-position: center;");
                         center.getChildren().addAll(friendsVbox, nameLabelUpdated, newUserBase.getLabelFriends(), PicFrame, newUserBase.getStatusDefault());
-
-
+                        borderPane.getChildren().clear();
+                        stackPane.getChildren().clear();
+                        center.setAlignment(Pos.TOP_LEFT);
+                        HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+                        topText.setMinWidth(200);
+                        nameLabel.setMinWidth(50);
+                        nameLabel.setMinHeight(100);
+                        horizontal.setAlignment(Pos.CENTER);
+                        horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+                        horizontal.setPrefSize(100, 100);
+                        stackPane.getChildren().add(center);
                         borderPane.setLeft(vertical);
-                        borderPane.setCenter(center);
+                        borderPane.setTop(horizontal);
+                        borderPane.setCenter(stackPane);
+
 
                     } else if (topLast.isEmpty()) {
-                        errorLabel = new Label("ENTER A PROFILE NAME FIRST!");
+                        errorLabel = new Label("ENTER A PROFILE NAME!");
                         ErrorPane(errorLabel);
                     }
                 }
@@ -303,35 +331,45 @@ public class parent extends Application {
                 checker = false;
 
                 if (topLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A NAME FIRST!");
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
-
                 } else {
                     for (profileBase user : users) {
-
                         if (Objects.equals(user.getNameForButton(), topLast)) {
                             checker = true;
                             users.remove(user);
                             center.getChildren().clear();
-                            stackPane.getChildren().clear();
                             borderPane.getChildren().clear();
+                            stackPane.getChildren().clear();
+                            center.setAlignment(Pos.TOP_LEFT);
+                            HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+                            topText.setMinWidth(200);
+                            nameLabel.setMinWidth(50);
+                            nameLabel.setMinHeight(100);
+                            horizontal.setAlignment(Pos.CENTER);
+                            vertical.setAlignment(Pos.CENTER);
+                            vertical.setSpacing(20); //doesnt work
+                            vertical.setPrefSize(300, 100);
+                            vertical.setAlignment(Pos.CENTER);
+                            vertical.setPadding(new Insets(0, 10, 0, 10));
+
+                            horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+                            horizontal.setPrefSize(100, 100);
                             stackPane.getChildren().add(center);
-                            borderPane.setTop(horizontal);
                             borderPane.setLeft(vertical);
+                            borderPane.setTop(horizontal);
                             borderPane.setCenter(stackPane);
+
                             break;
                         }
-
-
                     }
-
                     bottomStatus = new Label("Profile of " + topLast + " has been deleted");
                     bottomStatus.setFont(Font.font("Arial", 20));
-                    center.add(bottomStatus, 30, 80);
+                    center.add(bottomStatus, 1, 35);
 
                     if (!checker) {
                         center.getChildren().clear();
-                        errorLabel = new Label("THIS USER DOES NOT EXIST!");
+                        errorLabel = new Label("PROFILE DOES NOT EXIST!");
                         ErrorPane(errorLabel);
                     }
                 }
@@ -339,7 +377,7 @@ public class parent extends Application {
                 checker = false;
 
                 if (topLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A NAME FIRST!");
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else {
                     for (profileBase user : users) {
@@ -360,7 +398,7 @@ public class parent extends Application {
                     center.add(bottomStatus, 1, 35);
 
                 } else {
-                    errorLabel = new Label("THE USER DOES NOT EXIST!");
+                    errorLabel = new Label("PROFILE DOES NOT EXIST!");
                     ErrorPane(errorLabel);
                 }
 
@@ -369,10 +407,10 @@ public class parent extends Application {
                 checker = false;
 
                 if (topLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A NAME FIRST!");
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else if (statusLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A STATUS FIRST!");
+                    errorLabel = new Label("UPDATE YOUR STATUS!");
                     ErrorPane(errorLabel);
                 } else {
                     for (profileBase user : users) {
@@ -380,6 +418,10 @@ public class parent extends Application {
                             checker = true;
                             break;
                         }
+                    }
+                    if (!checker) {
+                        errorLabel = new Label("PROFILE DOES NOT EXIST!");
+                        ErrorPane(errorLabel);
                     }
                 }
                 if (checker) {
@@ -390,25 +432,20 @@ public class parent extends Application {
                             display(user);
                         }
                     }
-
                     bottomStatus = new Label("Status updated to: " + statusLast);
                     bottomStatus.setFont(Font.font("Arial", 20));
                     center.add(bottomStatus, 1, 35);
-
-                } else {
-                    errorLabel = new Label("Status can not be empty!");
-                    ErrorPane(errorLabel);
                 }
             } else if (e.getSource() == changePicture) {
-                // WE NEED A CONDITION FOR IF THE PIC DOES NOT EXIST
                 checker = false;
 
                 if (topLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!");
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else if (pathLast.isEmpty()) {
                     errorLabel = new Label("ENTER A PICTURE PATH!");
                     ErrorPane(errorLabel);
+
                 } else {
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), topLast)) {
@@ -417,11 +454,19 @@ public class parent extends Application {
                         }
                     }
                     if (!checker) {
-                        errorLabel = new Label("THE USER DOES NOT EXIST!");
+                        errorLabel = new Label("PROFILE DOES NOT EXIST!");
                         ErrorPane(errorLabel);
                     }
                 }
                 if (checker) {
+                    if (!Arrays.asList(paths).contains(pathLast)) {
+                        checker = false;
+                        errorLabel = new Label("NO SUCH IMAGE IN GALLERY!");
+                        ErrorPane(errorLabel);
+                    }
+                }
+                if (checker) {
+
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), topLast)) {
                             user.profileDefault = new ImageView(new Image(pathLast));
@@ -439,14 +484,10 @@ public class parent extends Application {
             } else if (e.getSource() == addFriend) {
                 checker = false;
 
-                if (topLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A NAME FIRST!");
-                    ErrorPane(errorLabel);
-                } else if (addLast.isEmpty()) {
-                    errorLabel = new Label("ENTER A NAME FIRST!");
+                if (topLast.isEmpty() || addLast.isEmpty()) {
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 }
-
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), topLast)) {
                         checker = true;
@@ -454,7 +495,7 @@ public class parent extends Application {
                     }
                 }
                 if (!checker) {
-                    errorLabel = new Label("ENTER A VALID PROFILE NAME FIRST!");
+                    errorLabel = new Label("PROFILE DOES NOT EXIST!");
                     ErrorPane(errorLabel);
                 }
                 if (checker) {
@@ -467,7 +508,7 @@ public class parent extends Application {
                         }
                     }
                     if (!checker) {
-                        errorLabel = new Label("THE USER YOU WANT TO ADD DOES NOT EXIST!");
+                        errorLabel = new Label("PROFILE DOES NOT EXIST!");
                         ErrorPane(errorLabel);
                     }
                 }
@@ -477,31 +518,25 @@ public class parent extends Application {
                     if (!topLast.equals(addLast)) {
                         checker = true;
                     } else {
-                        errorLabel = new Label("CANNOT ADD YOURSELF AS A FRIEND!");
+                        errorLabel = new Label("YOU CAN NOT ADD YOURSELF!");
                         ErrorPane(errorLabel);
 
                     }
 
                 }
                 if (checker) {
-                    checker = false;
-
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), topLast)) {
                             if (!user.getMyFriends().isEmpty()) {
                                 for (String userName : user.getMyFriends()) {
                                     if (Objects.equals(addLast, userName)) {
-                                        errorLabel = new Label("The user you have chosen as a friend is already added");
+                                        errorLabel = new Label("PROFILE IS ADDED!");
                                         ErrorPane(errorLabel);
-                                        break;
-                                    } else {
-                                        checker = true;
+                                        checker = false;
+
                                         break;
                                     }
                                 }
-                            } else {
-                                checker = true;
-                                break;
                             }
                         }
                     }
@@ -540,74 +575,126 @@ public class parent extends Application {
             if (e.getSource() == DismissButton) {
                 stackPane.getChildren().remove(errorMessage);
 
-                if (borderPane.getChildren().contains(vertical)) {
+                if (borderPane.getChildren().contains(vertical) || borderPane.getChildren().contains(horizontal)) {
                     borderPane.getChildren().clear();
-                    borderPane.setTop(horizontal);
+                    stackPane.getChildren().clear();
+                    HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+                    topText.setMinWidth(200);
+                    nameLabel.setMinWidth(50);
+                    nameLabel.setMinHeight(100);
+                    horizontal.setAlignment(Pos.CENTER);
+                    horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+                    horizontal.setPrefSize(100, 100);
+                    stackPane.getChildren().add(center);
                     borderPane.setLeft(vertical);
+                    borderPane.setTop(horizontal);
                     borderPane.setCenter(stackPane);
+
                 } else {
                     borderPane.getChildren().clear();
-                    borderPane.setTop(horizontal);
-                    borderPane.setCenter(stackPane);
+                    center.getChildren().clear();
+                    center.setStyle("-fx-background-color:#dfeffa;-fx-background-size: cover;-fx-background-position: center;-fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px;");
+                    center.add(welcome, 0, 0, 2, 1);
+                    center.add(nameLabel, 0, 1);
+                    center.add(topText, 1, 1);
+                    center.add(addButton, 0, 2);
+                    center.add(lookupButton, 1, 2);
+                    borderPane.setRight(imageView);
+                    borderPane.setCenter(center);
+                    borderPane.setStyle("-fx-background-color: #041e41;-fx-border-color: black; -fx-border-width: 1px; ");
+
 
                 }
 
 
             }
             if (e.getSource() == images) {
-                
-                stackPane.getChildren().clear();
-                center.getChildren().clear();
-
-                stackPane.getChildren().add(center);
-
-
                 borderPane.getChildren().clear();
+                center.getChildren().clear();
+                stackPane.getChildren().clear();
+                center.setAlignment(Pos.TOP_LEFT);
+                HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+                topText.setMinWidth(200);
+                nameLabel.setMinWidth(50);
+                nameLabel.setMinHeight(100);
+                horizontal.setAlignment(Pos.CENTER);
+                horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+                horizontal.setPrefSize(100, 100);
+                stackPane.getChildren().add(center);
                 borderPane.setLeft(vertical);
                 borderPane.setTop(horizontal);
                 borderPane.setCenter(stackPane);
 
+                center.add(returnButton, 0, 3);
+
+                int column = 0;
+                int row = 0;
+
+                for (String path : paths) {
+                    ImageView imageView = new ImageView(new Image(path));
+                    imageView.setFitWidth(240);
+                    imageView.setFitHeight(240);
+                    center.add(imageView, column, row);
+                    imageView.setOnMouseClicked(event -> copyImagePath(path));
+                    column++;
+                    if (column >= 3) {
+                        column = 0;
+                        row++;
+                    }
+                    if (row >= 2) {
+                        break;
+                    }
+                }
+
 
             }
+
             if (e.getSource() == returnButton) {
-
+                checker = false;
+                for (profileBase user : users) {
+                    if (Objects.equals(user.getNameForButton(), topLast)) {
+                        checker = true;
+                        display(user);
+                    }
+                }
+                if (!checker) {
+                    errorLabel = new Label("PROFILE DOES NOT EXIST!");
+                    ErrorPane(errorLabel);
+                }
             }
-            if (e.getSource() == mainPage) {
-                borderPane.getChildren().clear();
-                stackPane.getChildren().clear();
-                center.getChildren().clear();
 
-                center.add(date, 0, 0);
-                center.add(numOfAccounts, 0, 1);
-                center.setStyle("-fx-background-color: #062746;-fx-background-radius: 4;");
-                center.setVgap(8);
-                center.setHgap(10);
-                center.setPadding(new Insets(10));
 
-                stackPane.getChildren().add(center);
-                borderPane.setTop(horizontal);
-                borderPane.setCenter(stackPane);
-            }
             if (e.getSource() == createGroup) {
                 borderPane.getChildren().clear();
-                stackPane.getChildren().clear();
                 center.getChildren().clear();
+                stackPane.getChildren().clear();
+                center.setAlignment(Pos.TOP_LEFT);
+                HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+                topText.setMinWidth(200);
+                nameLabel.setMinWidth(50);
+                nameLabel.setMinHeight(100);
+                horizontal.setAlignment(Pos.CENTER);
+                horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+                horizontal.setPrefSize(100, 100);
+                stackPane.getChildren().add(center);
+                borderPane.setLeft(vertical);
+                borderPane.setTop(horizontal);
+                borderPane.setCenter(stackPane);
 
                 addEvent.setGraphic(addEventText);
                 center.setAlignment(Pos.CENTER);
                 center.setHgap(10);
                 center.setVgap(10);
-                center.add(usernameLabel, 0, 0);
-                center.add(userHost, 1, 0);
-                center.add(nameEventLabel, 0, 1);
-                center.add(EventName, 1, 1);
-                center.add(addEvent, 0, 2, 2, 1);
+                center.add(new Text("Create an event blast \nand invite your friends to join you!\nSimply enter your profile name, the name of the event,\nand the name of the friend you want to invite.\nOnce you submit this information, \nyour friend’s status will be updated to show that they are attending the event. \nIt’s that easy!"), 0, 0);
+                center.add(usernameLabel, 0, 1);
+                center.add(userHost, 1, 1);
+                center.add(nameEventLabel, 0, 2);
+                center.add(EventName, 1, 2);
+                center.add(addEvent, 0, 3);
+                center.add(submit, 0, 4);
+                center.add(returnButton, 0, 5);
 
 
-                stackPane.getChildren().add(center);
-                borderPane.setLeft(vertical);
-                borderPane.setTop(horizontal);
-                borderPane.setCenter(stackPane);
             }
             if (e.getSource() == addEvent) {
                 checker = false;
@@ -616,31 +703,53 @@ public class parent extends Application {
                     errorLabel = new Label("ENTER A NAME FIRST!");
                     ErrorPane(errorLabel);
                 } else {
-                    for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), addGuestLast)) {
-                            checker = true;
-                            break;
+                    if (checkerHost == 0) {
+                        for (profileBase user : users) {
+                            if (Objects.equals(user.getNameForButton(), userHost.getText())) {
+                                checker = true;
+                                checkerHost = 1;
+                                String u = user.statusDefault.getText();
+
+                                if (!Objects.equals(u, "No current status")) {
+                                    user.statusDefault = new Label(u + " and I am hosting a " + EventName.getText() + " event");
+                                    user.getFinStatus(u + " and I am hosting a " + EventName.getText() + " event");
+                                } else {
+                                    user.statusDefault = new Label("I am hosting a " + EventName.getText() + " event");
+                                    user.getFinStatus(" I am hosting a " + EventName.getText() + " event");
+                                }
+                                break;
+                            }
                         }
                     }
                 }
-                if (checker) {
+
+                if (checker || !userHost.getText().isEmpty()) {
+                    checker=false;
                     for (profileBase user : users) {
                         if (Objects.equals(user.getNameForButton(), addGuestLast)) {
+                            checker= true;
                             String u = user.statusDefault.getText();
 
                             if (!Objects.equals(u, "No current status")) {
-                                user.statusDefault = new Label(u + "and I have a " + EventName.getText() + " hosted by " + userHost.getText());
-                                user.getFinStatus(u + "and I have a " + EventName.getText() + " hosted by " + userHost.getText());
+                                user.statusDefault = new Label(u + " and I have a " + EventName.getText() + " hosted by " + userHost.getText());
+                                user.getFinStatus(u + " and I have a " + EventName.getText() + " hosted by " + userHost.getText());
                             } else {
                                 user.statusDefault = new Label("I have a " + EventName.getText() + " hosted by " + userHost.getText());
                                 user.getFinStatus("I have a " + EventName.getText() + " hosted by " + userHost.getText());
                             }
                         }
                     }
+                    if (!checker){
+                        errorLabel = new Label("FRIEND PROFILE DOES NOT EXIST!");
+                        ErrorPane(errorLabel);
+                    }
                 } else {
-                    errorLabel = new Label("The name you entered does not exist");
+                    errorLabel = new Label("PROFILE DOES NOT EXIST!");
                     ErrorPane(errorLabel);
                 }
+            }
+            if (e.getSource() == submit) {
+                checkerHost = 0;
             }
         }
     }
@@ -664,7 +773,7 @@ public class parent extends Application {
         }
         center.getChildren().clear();
         center.setAlignment(Pos.TOP_LEFT);
-        center.setStyle("-fx-background-image: url('/grey.jpeg');-fx-background-size: cover;-fx-background-position: center;");
+        center.setStyle("-fx-background-image: url('/profil3.jpg');-fx-background-size: cover;-fx-background-position: center;");
 
 
         GridPane.setConstraints(PicFrame, 0, 1);
@@ -688,6 +797,13 @@ public class parent extends Application {
                 }
             }
         }
+        HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
+        topText.setMinWidth(200);
+        nameLabel.setMinWidth(50);
+        nameLabel.setMinHeight(100);
+        horizontal.setAlignment(Pos.CENTER);
+        horizontal.setStyle("-fx-background-color: #bdd2dc;-fx-background-radius: 4;");
+        horizontal.setPrefSize(100, 100);
         center.getChildren().addAll(friendsVbox, user.getNameLabel(), user.getLabelFriends(), PicFrame, user.getStatusDefault());
         stackPane.getChildren().clear();
         stackPane.getChildren().add(center);
@@ -715,7 +831,7 @@ public class parent extends Application {
 
     public void stop() throws Exception {
         //Save user data
-        writer.writeData(users);
+        writer.saveData(users);
     }
 
     public static void main(String[] args) {
