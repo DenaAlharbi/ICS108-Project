@@ -297,7 +297,7 @@ public class parent extends Application {
 
                         profileBase newUserBase = new profileBase(topLast);
                         users.add(newUserBase);
-                        Label nameLabelUpdated = newUserBase.getNameLabel();
+                        Text nameLabelUpdated = newUserBase.getNameLabel();
                         PicFrame.getChildren().clear();
                         PicFrame.setPrefWidth(300);
                         PicFrame.setPrefHeight(300);
@@ -418,12 +418,15 @@ public class parent extends Application {
                     center.add(bottomStatus, 1, 35);
 
                 }
-                else if (!topLast.equals("")){
-                        center.getChildren().remove(bottomStatus);
-                        bottomStatus = new Label("A profile with the name " + topLast + " does not exist") ;
-                        bottomStatus.setFont(Font.font("Arial", 20));
-                        bottomStatus.setStyle("-fx-text-fill: #000000;");
-                        center.add(bottomStatus, 1, 40);
+                else if (!checker&& borderPane.getChildren().contains(vertical)){
+                    center.getChildren().remove(bottomStatus);
+                    bottomStatus = new Label("A profile with the name " + topLast + " does not exist") ;
+                    bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #000000;");
+                    center.add(bottomStatus, 1, 40);
+                }else if(!checker && !borderPane.getChildren().contains(vertical)){
+                    errorLabel = new Label("THE PROFILE DOES NOT EXIST!");
+                    ErrorPane(errorLabel);
                 }
 
 
@@ -433,12 +436,12 @@ public class parent extends Application {
 
                 if (topLast.isEmpty()) {
                     center.getChildren().remove(bottomStatus);
-                    bottomStatus = new Label("Please select profile to change status") ;
+                    /*bottomStatus = new Label("Please select profile to change status") ;
                     bottomStatus.setFont(Font.font("Arial", 20));
                     bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
-                    center.add(bottomStatus, 1, 60);
-                    /*errorLabel = new Label("ENTER A PROFILE NAME!");
-                    ErrorPane(errorLabel);*/
+                    center.add(bottomStatus, 1, 60);*/
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
+                    ErrorPane(errorLabel);
                 } else if (statusLast.isEmpty()) {
                     errorLabel = new Label("UPDATE YOUR STATUS!");
                     ErrorPane(errorLabel);
@@ -472,12 +475,12 @@ public class parent extends Application {
 
                 if (topLast.equals("")) {
                     center.getChildren().remove(bottomStatus);
-                    bottomStatus = new Label("Please select profile to change picture");
+                    /*bottomStatus = new Label("Please select profile to change picture");
                     bottomStatus.setFont(Font.font("Arial", 20));
                     bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
-                    center.add(bottomStatus, 1, 60);
-                   /* errorLabel = new Label("ENTER A PROFILE NAME!");
-                    ErrorPane(errorLabel);*/
+                    center.add(bottomStatus, 1, 60);*/
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
+                    ErrorPane(errorLabel);
                 } else if (pathLast.isEmpty()) {
                     errorLabel = new Label("ENTER A PICTURE PATH!");
                     ErrorPane(errorLabel);
@@ -523,12 +526,12 @@ public class parent extends Application {
 
                 if (topLast.equals("") || addLast.isEmpty()) {
                     center.getChildren().remove(bottomStatus);
-                    bottomStatus = new Label("Please select profile to add friend");
+                    /*bottomStatus = new Label("Please select profile to add friend");
                     bottomStatus.setFont(Font.font("Arial", 20));
                     bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
-                    center.add(bottomStatus, 1, 60);
-                    /*errorLabel = new Label("ENTER A PROFILE NAME!");
-                    ErrorPane(errorLabel);*/
+                    center.add(bottomStatus, 1, 60);*/
+                    errorLabel = new Label("ENTER A PROFILE NAME!");
+                    ErrorPane(errorLabel);
                 }
                 for (profileBase user : users) {
                     if (Objects.equals(user.getNameForButton(), topLast)) {
@@ -618,7 +621,7 @@ public class parent extends Application {
             if (e.getSource() == DismissButton) {
                 stackPane.getChildren().remove(errorMessage);
 
-                if (borderPane.getChildren().contains(vertical) || borderPane.getChildren().contains(horizontal)) {
+                if (borderPane.getChildren().contains(vertical) ) {
                     borderPane.getChildren().clear();
                     stackPane.getChildren().clear();
                     HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
@@ -924,7 +927,7 @@ public class parent extends Application {
 
     public void stop() throws Exception {
         //Save user data
-        writer.writeData(users);
+        writer.saveData(users);
     }
 
     public static void main(String[] args) {
