@@ -59,6 +59,8 @@ public class parent extends Application {
     Button changePicture = new Button("Change Picture"), returnButton = new Button("Return to profile"), addFriend = new Button("Add Friend");
 
     Button images = new Button("Image Gallery"), statusGenerator = new Button("Quote of the day"), createGroup = new Button("Create an event blast"), addEvent = new Button("Add Friend"), submit = new Button("Submit");
+    Button Users = new Button("FaceLite users");
+
 
     //Text Fields
     TextField changePicText = new TextField(), changeStatusText = new TextField(), addFriendText = new TextField(), userHost = new TextField(), EventName = new TextField(), addEventText = new TextField(), topText = new TextField();
@@ -69,10 +71,11 @@ public class parent extends Application {
 
     BorderPane borderPane = new BorderPane();
     GridPane center = new GridPane();
+    int numberOfAccounts = 0;
 
     StackPane PicFrame = new StackPane(), stackPane = new StackPane();
     HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton), errorMessage = new HBox();
-    VBox vertical = new VBox(30, statusGenerator, createGroup, images, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus)), friendsVbox = new VBox();
+    VBox vertical = new VBox(30, statusGenerator, createGroup, images, Users, new VBox(addFriendText, addFriend), new VBox(changePicText, changePicture), new VBox(changeStatusText, changeStatus)), friendsVbox = new VBox();
 
 
     @Override
@@ -143,6 +146,10 @@ public class parent extends Application {
         addEvent.setOnAction(new ButtonHandler());
         returnButton.setOnAction(new ButtonHandler());
         statusGenerator.setOnAction(new ButtonHandler());
+        Users.setOnAction(new ButtonHandler());
+
+        //styling the buttons
+        Users.setStyle("-fx-effect: dropshadow(three-pass-box, rgb(60,84,89), 10, 0, 0, 0);-fx-background-radius: 20;");
         statusGenerator.setStyle("-fx-effect: dropshadow(three-pass-box, rgb(60,84,89), 10, 0, 0, 0);-fx-background-radius: 20;");
         DismissButton.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         addButton.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
@@ -181,16 +188,12 @@ public class parent extends Application {
         // Welcome Pane Styling
         date.setText("The date today is: " + LocalDate.now());
         date.setStyle("-fx-font-size: 18; -fx-fill: black;");
-        this.numOfAccounts.setText("The Number Of Accounts is: " + numOfAccounts);
-        this.numOfAccounts.setStyle("-fx-font-size: 24; -fx-fill: black;");
+
         center.getChildren().clear();
-        //center.add(date, 0, 0);
-        //center.add(this.numOfAccounts, 0, 1);
         GridPane.setHalignment(date, HPos.LEFT);
 
         //setting up the main panes
         vertical.setStyle("-fx-background-color: #dfeffa;-fx-background-radius: 4;");
-        vertical.setSpacing(20); //doesnt work
         vertical.setPrefSize(300, 100);
         vertical.setAlignment(Pos.CENTER);
         vertical.setPadding(new Insets(0, 10, 0, 10));
@@ -230,6 +233,9 @@ public class parent extends Application {
 
     public class ButtonHandler implements EventHandler<ActionEvent> {
 
+        Label numOfAccounts = new Label("");
+
+        //Method to copy the path of a image by a  mouseclick
         private void copyImagePath(String imgPath) {
             Clipboard clipboard = Clipboard.getSystemClipboard();
             ClipboardContent content = new ClipboardContent();
@@ -276,13 +282,14 @@ public class parent extends Application {
             //This will be used later in all the buttons to check if certain requirements are met
             boolean checker;
 
-
+            // Add new users
             if (e.getSource() == addButton) {
                 checker = true;
 
                 if (!topLast.isEmpty()) {
+                    //checks if the user is already in the system
                     for (profileBase userAddress : users) {
-                        if (Objects.equals(userAddress.getNameForButton(), topLast)) {
+                        if (Objects.equals(userAddress.getUserName(), topLast)) {
                             errorLabel = new Label("THIS USER ALREADY EXISTS!");
                             ErrorPane(errorLabel);
                             checker = false;
@@ -291,7 +298,7 @@ public class parent extends Application {
 
                     }
                     if (checker) {
-
+                        //adding the user
                         profileBase newUserBase = new profileBase(topLast);
                         users.add(newUserBase);
                         Text nameLabelUpdated = newUserBase.getNameLabel();
@@ -318,6 +325,7 @@ public class parent extends Application {
 
                         bottomStatus = new Label("New Profile Created");
                         bottomStatus.setFont(Font.font("Arial", 20));
+                        bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                         center.add(bottomStatus, 1, 35);
 
                         center.setStyle("-fx-background-image: url('/proBack1.jpg');-fx-background-size: cover;-fx-background-position: center;");
@@ -344,7 +352,7 @@ public class parent extends Application {
                     }
                 }
 
-
+                //Delete users
             } else if (e.getSource() == deleteButton) {
                 checker = false;
 
@@ -353,7 +361,7 @@ public class parent extends Application {
                     ErrorPane(errorLabel);
                 } else {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             checker = true;
                             users.remove(user);
                             center.getChildren().clear();
@@ -376,10 +384,13 @@ public class parent extends Application {
                         }
                     }
                     center.setAlignment(Pos.CENTER);
-
+                    //Display what is going on at the bottom of the app
                     bottomStatus = new Label("Profile of " + topLast + " has been deleted");
                     bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                     center.add(bottomStatus, 2, 62);
+                    topLast = "";
+
 
                     if (!checker) {
                         center.getChildren().clear();
@@ -387,15 +398,18 @@ public class parent extends Application {
                         ErrorPane(errorLabel);
                     }
                 }
+                //Look for users that exist
             } else if (e.getSource() == lookupButton) {
                 checker = false;
 
-                if (topLast.isEmpty()) {
+                if (topLast.equals("")) {
+                    center.getChildren().remove(bottomStatus);
                     errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else {
+                    //check if they exist or else an error will pop up later
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             checker = true;
                             break;
                         }
@@ -403,24 +417,32 @@ public class parent extends Application {
                 }
                 if (checker) {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             display(user);
                         }
                     }
                     bottomStatus = new Label("Displaying " + topLast);
                     bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                     center.add(bottomStatus, 1, 35);
 
+                } else if (!checker && borderPane.getChildren().contains(vertical)) {
+                    center.getChildren().remove(bottomStatus);
+                    bottomStatus = new Label("A profile with the name " + topLast + " does not exist");
+                    bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #f3e3d3;");
+                    center.add(bottomStatus, 1, 62);
                 } else {
-                    errorLabel = new Label("PROFILE DOES NOT EXIST!");
+                    errorLabel = new Label("THE PROFILE DOES NOT EXIST!");
                     ErrorPane(errorLabel);
                 }
 
-
+                //one of the ways to change the status
             } else if (e.getSource() == changeStatus) {
                 checker = false;
 
                 if (topLast.isEmpty()) {
+                    center.getChildren().remove(bottomStatus);
                     errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else if (statusLast.isEmpty()) {
@@ -428,7 +450,7 @@ public class parent extends Application {
                     ErrorPane(errorLabel);
                 } else {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             checker = true;
                             break;
                         }
@@ -440,7 +462,7 @@ public class parent extends Application {
                 }
                 if (checker) {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             user.statusDefault = new Label(statusLast);
                             user.getFinStatus(statusLast);
                             display(user);
@@ -448,12 +470,15 @@ public class parent extends Application {
                     }
                     bottomStatus = new Label("Status updated to: " + statusLast);
                     bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                     center.add(bottomStatus, 1, 35);
                 }
+                //change the picture of a profile
             } else if (e.getSource() == changePicture) {
                 checker = false;
 
-                if (topLast.isEmpty()) {
+                if (topLast.equals("")) {
+                    center.getChildren().remove(bottomStatus);
                     errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 } else if (pathLast.isEmpty()) {
@@ -462,7 +487,7 @@ public class parent extends Application {
 
                 } else {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             checker = true;
                             break;
                         }
@@ -482,7 +507,7 @@ public class parent extends Application {
                 if (checker) {
 
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             user.profileDefault = new ImageView(new Image(pathLast));
                             user.getPicPath(pathLast);
                             display(user);
@@ -491,19 +516,22 @@ public class parent extends Application {
 
                     bottomStatus = new Label("Picture updated");
                     bottomStatus.setFont(Font.font("Arial", 20));
+                    bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                     center.add(bottomStatus, 1, 35);
                 }
 
-
+                //add a friend to the profiles friends list
             } else if (e.getSource() == addFriend) {
                 checker = false;
 
-                if (topLast.isEmpty() || addLast.isEmpty()) {
+                if (topLast.equals("") || addLast.isEmpty()) {
+                    center.getChildren().remove(bottomStatus);
+
                     errorLabel = new Label("ENTER A PROFILE NAME!");
                     ErrorPane(errorLabel);
                 }
                 for (profileBase user : users) {
-                    if (Objects.equals(user.getNameForButton(), topLast)) {
+                    if (Objects.equals(user.getUserName(), topLast)) {
                         checker = true;
                         break;
                     }
@@ -516,7 +544,7 @@ public class parent extends Application {
                     checker = false;
 
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), addLast)) {
+                        if (Objects.equals(user.getUserName(), addLast)) {
                             checker = true;
                             break;
                         }
@@ -540,7 +568,7 @@ public class parent extends Application {
                 }
                 if (checker) {
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             if (!user.getMyFriends().isEmpty()) {
                                 for (String userName : user.getMyFriends()) {
                                     if (Objects.equals(addLast, userName)) {
@@ -559,11 +587,11 @@ public class parent extends Application {
                 if (checker) {
                     for (profileBase user : users) {
 
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             for (profileBase userADD : users) {
-                                if (Objects.equals(userADD.getNameForButton(), addLast)) {
-                                    user.getMyFriends().add(userADD.getNameForButton());
-                                    userADD.getMyFriends().add(user.getNameForButton());
+                                if (Objects.equals(userADD.getUserName(), addLast)) {
+                                    user.getMyFriends().add(userADD.getUserName());
+                                    userADD.getMyFriends().add(user.getUserName());
                                     for (int i = 0; i < userADD.getMyFriends().size(); i++) {
 
                                         userADD.getMyFriendsUpdate(userADD.getMyFriends().get(i));
@@ -575,10 +603,11 @@ public class parent extends Application {
                                 }
                             }
                         }
-                        if (Objects.equals(user.getNameForButton(), topLast)) {
+                        if (Objects.equals(user.getUserName(), topLast)) {
                             display(user);
                             bottomStatus = new Label(addLast + " added as a friend");
                             bottomStatus.setFont(Font.font("Arial", 20));
+                            bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                             center.add(bottomStatus, 1, 35);
                         }
                     }
@@ -589,7 +618,7 @@ public class parent extends Application {
             if (e.getSource() == DismissButton) {
                 stackPane.getChildren().remove(errorMessage);
 
-                if (borderPane.getChildren().contains(vertical) || borderPane.getChildren().contains(horizontal)) {
+                if (borderPane.getChildren().contains(vertical)) {
                     borderPane.getChildren().clear();
                     stackPane.getChildren().clear();
                     HBox horizontal = new HBox(10, nameLabel, topText, addButton, deleteButton, lookupButton);
@@ -666,7 +695,7 @@ public class parent extends Application {
             if (e.getSource() == returnButton) {
                 checker = false;
                 for (profileBase user : users) {
-                    if (Objects.equals(user.getNameForButton(), topLast)) {
+                    if (Objects.equals(user.getUserName(), topLast)) {
                         checker = true;
                         display(user);
                     }
@@ -675,6 +704,29 @@ public class parent extends Application {
                     errorLabel = new Label("PROFILE DOES NOT EXIST!");
                     ErrorPane(errorLabel);
                 }
+            }
+
+            if (e.getSource() == Users) {
+                center.setAlignment(Pos.TOP_LEFT);
+
+                center.getChildren().clear();
+                center.add(returnButton, 0, 3);
+                VBox userNames = new VBox();
+                numOfAccounts.setStyle("-fx-font-size: 24; -fx-fill: black;");
+                numberOfAccounts = users.size();
+                numOfAccounts.setText("The Number Of Accounts is: " + numberOfAccounts);
+
+                userNames.getChildren().add(numOfAccounts);
+
+                userNames.setPadding(new Insets(10));
+                userNames.setSpacing(10);
+                for (profileBase user : users) {
+                    Label name = new Label(user.getUserName());
+                    userNames.getChildren().add(name);
+
+                }
+
+                center.getChildren().add(userNames);
             }
 
 
@@ -718,7 +770,7 @@ public class parent extends Application {
                 } else {
                     if (checkerHost == 0) {
                         for (profileBase user : users) {
-                            if (Objects.equals(user.getNameForButton(), userHost.getText())) {
+                            if (Objects.equals(user.getUserName(), userHost.getText())) {
                                 checkerHost = 1;
                                 String u = user.statusDefault.getText();
 
@@ -738,7 +790,7 @@ public class parent extends Application {
                 if (checkerHost == 1) {
                     checker = false;
                     for (profileBase user : users) {
-                        if (Objects.equals(user.getNameForButton(), addGuestLast)) {
+                        if (Objects.equals(user.getUserName(), addGuestLast)) {
                             checker = true;
                             String u = user.statusDefault.getText();
                             //center.setAlignment(Pos.CENTER);
@@ -749,6 +801,7 @@ public class parent extends Application {
                                 user.getFinStatus(u + " and I have a " + EventName.getText() + " hosted by " + userHost.getText());
                                 bottomStatus = new Label("Friend added");
                                 bottomStatus.setFont(Font.font("Arial", 20));
+                                bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                                 //center.add(bottomStatus, 1, 35);
                             } else {
 
@@ -771,15 +824,13 @@ public class parent extends Application {
             }
             if (e.getSource() == submit) {
                 checkerHost = 0;
-                bottomStatus = new Label("Form submitted");
-                bottomStatus.setFont(Font.font("Arial", 20));
-                center.add(bottomStatus, 1, 35);
+
             }
             if (e.getSource() == statusGenerator) {
                 Random ran = new Random();
                 String q = quotes.get(ran.nextInt(quotes.size()));
                 for (profileBase user : users) {
-                    if (Objects.equals(user.getNameForButton(), topLast)) {
+                    if (Objects.equals(user.getUserName(), topLast)) {
 
                         user.statusDefault = new Label(q);
                         user.getFinStatus(q);
@@ -831,7 +882,7 @@ public class parent extends Application {
         if (!user.getMyFriends().isEmpty()) {
             for (String userName : user.getMyFriends()) {
                 for (profileBase user1 : users) {
-                    if (user1.getNameForButton().equals(userName)) {
+                    if (user1.getUserName().equals(userName)) {
                         Label label = new Label(userName);
                         friendsVbox.getChildren().add(label);
                     }
