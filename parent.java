@@ -29,7 +29,7 @@ import java.util.*;
 
 
 public class parent extends Application {
-    static String FILE_NAME = "C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\java\\com\\example\\project1\\data.txt";
+    static String FILE_NAME = "data.txt";
 
 
     //Arraylists
@@ -65,7 +65,7 @@ public class parent extends Application {
     //Text Fields
     TextField changePicText = new TextField(), changeStatusText = new TextField(), addFriendText = new TextField(), userHost = new TextField(), EventName = new TextField(), addEventText = new TextField(), topText = new TextField();
 
-    ImageView imageView = new ImageView(new Image("C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\resources\\f.png"));
+    ImageView imageView = new ImageView(new Image("f.png"));
 
     //Panes
 
