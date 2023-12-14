@@ -36,7 +36,7 @@ import java.util.*;
 public class parent extends Application {
 
     //Declarations
-    static String FILE_NAME = "data.txt";
+    static String FILE_NAME = "C:\\Users\\denaa\\OneDrive\\Desktop\\IdeaProjects\\Project1\\src\\main\\java\\com\\example\\project1\\data.txt";
     int numberOfAccounts = 0;
 
     //Arraylists
@@ -416,9 +416,10 @@ public class parent extends Application {
                     bottomStatus.setStyle("-fx-text-fill: #F3E3D3;");
                     center.add(bottomStatus, 1, 35);
 
-                } else if (!checker && borderPane.getChildren().contains(vertical)) {
-                    center.getChildren().remove(bottomStatus);
-                    bottomStatus = new Label("A profile with the name " + topLast + " does not exist");
+                } else if (!checker && borderPane.getChildren().contains(vertical) && !topLast.equals("")) {
+                    center.getChildren().clear();
+                    center.setAlignment(Pos.CENTER);
+                    bottomStatus = new Label("A profile with the name " + topLast + " does not exist" );
                     bottomStatus.setFont(Font.font("Arial", 20));
                     bottomStatus.setStyle("-fx-text-fill: #f3e3d3;");
                     center.add(bottomStatus, 1, 62);
